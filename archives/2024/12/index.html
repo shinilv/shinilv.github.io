@@ -1,19 +1,18 @@
 
-    <!DOCTYPE html>
-    <html lang="zh-CN">
-
-    <head>
-
-        <meta charset="utf-8" />
-        <title>
-            Archives | NILV的博客
-        </title>
-        <meta name="author" content="nilv" />
-        <meta name="description" content="希望你能得到些什么" />
-        <meta name="keywords" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        <link rel="icon" href="/images/avatar.jpg" />
-        <link rel="preconnect" href="https://s4.zstatic.net" />
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>Archives | NILV的博客</title>
+    <meta name="author" content="nilv" />
+    <meta name="description" content="希望你能得到些什么" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
 <script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
 <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 <link rel="preconnect" href="https://fonts.googleapis.cn" />
@@ -45,20 +44,19 @@
 
 <link rel="stylesheet" href="/css/main.css" />
 
-    <meta name="generator" content="Hexo 7.3.0"></head>
-
-    <body>
-        <div id="layout">
-            <transition name="fade">
-                <div id="loading" v-show="loading">
-                    <div id="loading-circle">
-                        <h2>LOADING</h2>
-                        <p>加载过慢请开启缓存 浏览器默认开启</p>
-                        <img src="/images/loading.gif" />
-                    </div>
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
                 </div>
-            </transition>
-            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
     <nav id="desktop-menu">
         <a class="title" href="/">
             <span>NILV的博客</span>
@@ -151,8 +149,8 @@
     <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
 </transition>
 
-                <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                    
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            
 <div id="archives">
     
     <div id="timeline-wrap" ref="timeline">
@@ -174,7 +172,7 @@
     </div>
 </div>
 
-                        <footer id="footer">
+            <footer id="footer">
     <div id="footer-wrap">
         <div>
             &copy;
@@ -192,19 +190,18 @@
     </div>
 </footer>
 
-                </div>
-                
-                    <transition name="fade">
-                        <div id="preview" ref="preview" v-show="previewShow">
-                            <img id="preview-content" ref="previewContent" />
-                        </div>
-                    </transition>
-                    
         </div>
-        <script src="/%20/js/main.js"></script>
         
-    </body>
-
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+</body>
     <script src="/js/<file>"></script>
     <link rel="stylesheet" href="/css/<file>" />
 
@@ -217,4 +214,7 @@
         style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"></canvas>
     <script src="/js/background.min.js"></script>
 
-    </html>
+</html>
+
+
+
