@@ -35,7 +35,7 @@
 <meta property="og:description" content="Dashboard - Codeforces Round 927 (Div. 3) - Codeforces A. Thorns and Coins思路：遇到@加一， 连续两个*结束循环 123456789101112131415161718192021222324#include &lt;iostream&gt;using namespace std;void solve() &#123;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-31T09:33:34.351Z">
-<meta property="article:modified_time" content="2024-12-31T14:39:26.356Z">
+<meta property="article:modified_time" content="2025-01-01T06:47:55.737Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2024/12/31/Codeforces-Round-927-(Div.-3)/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2024-12-31T09:33:34.351Z" itemprop="datePublished">2024-12-31</time>
-    <time style="display: none;" id="post-update-time">2024-12-31</time>
+    <time style="display: none;" id="post-update-time">2025-01-01</time>
   </a>
 </div>
 
@@ -221,11 +221,7 @@
 <h2 id="E-Final-Countdown"><a href="#E-Final-Countdown" class="headerlink" title="E. Final Countdown"></a>E. Final Countdown</h2><p>思路：计算每一位的贡献。Sn - 1, Sn - 2 … Sn - n， 最左边(最高位) 的贡献是 Si ⋅ ∑(j &#x3D; 0 到 i) 10^j， 把 i 带入n - 1, 自己手动模拟一下更容易理解。比如120，可以对应代码手动模拟</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    string s;</span><br><span class="line">    cin &gt;&gt; s;</span><br><span class="line">    <span class="built_in">reverse</span>(s.<span class="built_in">begin</span>(), s.<span class="built_in">end</span>());</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        a[i] = a[i + <span class="number">1</span>] + (s[i] - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    string ans;</span><br><span class="line">    <span class="type">int</span> c = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        c += a[i];</span><br><span class="line">        ans += (c % <span class="number">10</span> + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">        c /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ans += (c + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    <span class="keyword">while</span>(ans.<span class="built_in">back</span>() == <span class="string">&#x27;0&#x27;</span>)&#123;</span><br><span class="line">        ans.<span class="built_in">pop_back</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">reverse</span>(ans.<span class="built_in">begin</span>(), ans.<span class="built_in">end</span>());</span><br><span class="line">    cout &lt;&lt; ans &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span>(t--) <span class="built_in">solve</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-<h3 id="谢谢观看"><a href="#谢谢观看" class="headerlink" title="谢谢观看"></a>谢谢观看</h3>
+<h2 id="谢谢观看"><a href="#谢谢观看" class="headerlink" title="谢谢观看"></a>谢谢观看</h2>
       
     </div>
     <footer class="article-footer">
@@ -242,6 +238,22 @@
   </div>
   
   <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/images/banner.webp" data-sizes="auto" alt="Codeforces Round 886 (Div. 4)" class="lazyload">
+          
+        
+        <a href="/2025/01/01/Codeforces-Round-886-(Div.-4)/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            Codeforces Round 886 (Div. 4)
+          
+        </h3>
+      </div>
     
     
     <div class="article-nav-link-wrap article-nav-link-right">
@@ -282,7 +294,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Thorns-and-Coins"><span class="toc-number">1.</span> <span class="toc-text">A. Thorns and Coins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-Chaya-Calendar"><span class="toc-number">2.</span> <span class="toc-text">B. Chaya Calendar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-LR-remainders"><span class="toc-number">3.</span> <span class="toc-text">C. LR-remainders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Card-Game"><span class="toc-number">4.</span> <span class="toc-text">D. Card Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-Final-Countdown"><span class="toc-number">5.</span> <span class="toc-text">E. Final Countdown</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">5.1.</span> <span class="toc-text">谢谢观看</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Thorns-and-Coins"><span class="toc-number">1.</span> <span class="toc-text">A. Thorns and Coins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-Chaya-Calendar"><span class="toc-number">2.</span> <span class="toc-text">B. Chaya Calendar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-LR-remainders"><span class="toc-number">3.</span> <span class="toc-text">C. LR-remainders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Card-Game"><span class="toc-number">4.</span> <span class="toc-text">D. Card Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-Final-Countdown"><span class="toc-number">5.</span> <span class="toc-text">E. Final Countdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">6.</span> <span class="toc-text">谢谢观看</span></a></li></ol>
       
   </div>
 </div>
@@ -295,7 +307,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -372,7 +384,7 @@
     
     <div>
       <span class="icon-copyright"></span>
-      2020-2024
+      2020-2025
       <span class="footer-info-sep rotate"></span>
       nilv
     </div>
@@ -385,10 +397,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        1.9k
+        2.8k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        00:10
+        00:14
       </div>
     
     
@@ -420,7 +432,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Thorns-and-Coins"><span class="toc-number">1.</span> <span class="toc-text">A. Thorns and Coins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-Chaya-Calendar"><span class="toc-number">2.</span> <span class="toc-text">B. Chaya Calendar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-LR-remainders"><span class="toc-number">3.</span> <span class="toc-text">C. LR-remainders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Card-Game"><span class="toc-number">4.</span> <span class="toc-text">D. Card Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-Final-Countdown"><span class="toc-number">5.</span> <span class="toc-text">E. Final Countdown</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">5.1.</span> <span class="toc-text">谢谢观看</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Thorns-and-Coins"><span class="toc-number">1.</span> <span class="toc-text">A. Thorns and Coins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-Chaya-Calendar"><span class="toc-number">2.</span> <span class="toc-text">B. Chaya Calendar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-LR-remainders"><span class="toc-number">3.</span> <span class="toc-text">C. LR-remainders</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Card-Game"><span class="toc-number">4.</span> <span class="toc-text">D. Card Game</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#E-Final-Countdown"><span class="toc-number">5.</span> <span class="toc-text">E. Final Countdown</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">6.</span> <span class="toc-text">谢谢观看</span></a></li></ol>
       
   </div>
 </div>
@@ -433,7 +445,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>

@@ -35,7 +35,7 @@
 <meta property="og:description" content="CodeForces 1650A - Deletions of Two Adjacent Letters思路：给定一个字符串，进行任意次以下操作：选择字符串中的任意两个相邻字母 s并将它们从字符串中删除，使过程以长度为 1、由字母 c 组成的字符串结束。只需要判断字符串中是否存在这个字符，并且该字符的下表是偶数即可 12345678910111213141516171819202122232425">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-30T14:21:04.720Z">
-<meta property="article:modified_time" content="2024-12-30T15:53:15.247Z">
+<meta property="article:modified_time" content="2025-01-01T06:47:30.237Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2024/12/30/my-first-blog/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2024-12-30T14:21:04.720Z" itemprop="datePublished">2024-12-30</time>
-    <time style="display: none;" id="post-update-time">2024-12-30</time>
+    <time style="display: none;" id="post-update-time">2025-01-01</time>
   </a>
 </div>
 
@@ -217,7 +217,7 @@
 <h2 id="D-Twist-the-Permutation"><a href="#D-Twist-the-Permutation" class="headerlink" title="D - Twist the Permutation"></a><strong>D - Twist the Permutation</strong></h2><p>思路：将数字向左移动，回到1，2，3，4……的状态就可，可以看出，将第i个数向左移动时，前i个数都要跟着移动，i之后的数就不会移动。所以我们从大到小枚举，模拟即可</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">2e3</span> + <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> a[N];</span><br><span class="line"><span class="type">int</span> f[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> t;</span><br><span class="line">	cin &gt;&gt; t;</span><br><span class="line">	<span class="keyword">while</span> (t--)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">int</span> n;</span><br><span class="line">		cin &gt;&gt; n;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> x; cin &gt;&gt; x;</span><br><span class="line">			a[x] = i;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = n; i &gt;= <span class="number">1</span>; i--)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="type">int</span> tt = a[i];</span><br><span class="line">			<span class="type">int</span> yy = a[i] % i;</span><br><span class="line">			f[i] = yy;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt;= i; j++)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span> (a[j] - yy &gt;= <span class="number">0</span>)</span><br><span class="line">					a[j] = a[j] - yy;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">					a[j] = ( a[j] - yy + i) % n;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">			cout &lt;&lt; f[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">		cout &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="谢谢观看"><a href="#谢谢观看" class="headerlink" title="谢谢观看"></a>谢谢观看</h3>
+<h2 id="谢谢观看"><a href="#谢谢观看" class="headerlink" title="谢谢观看"></a>谢谢观看</h2>
       
     </div>
     <footer class="article-footer">
@@ -274,7 +274,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CodeForces-1650"><span class="toc-number">1.</span> <span class="toc-text">CodeForces 1650</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Deletions-of-Two-Adjacent-Letters"><span class="toc-number">1.1.</span> <span class="toc-text">A - Deletions of Two Adjacent Letters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-DIV-MOD"><span class="toc-number">1.2.</span> <span class="toc-text">B - DIV + MOD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Weight-of-the-System-of-Nested-Segments"><span class="toc-number">1.3.</span> <span class="toc-text">C - Weight of the System of Nested Segments**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Twist-the-Permutation"><span class="toc-number">1.4.</span> <span class="toc-text">D - Twist the Permutation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">谢谢观看</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CodeForces-1650"><span class="toc-number">1.</span> <span class="toc-text">CodeForces 1650</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Deletions-of-Two-Adjacent-Letters"><span class="toc-number">1.1.</span> <span class="toc-text">A - Deletions of Two Adjacent Letters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-DIV-MOD"><span class="toc-number">1.2.</span> <span class="toc-text">B - DIV + MOD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Weight-of-the-System-of-Nested-Segments"><span class="toc-number">1.3.</span> <span class="toc-text">C - Weight of the System of Nested Segments**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Twist-the-Permutation"><span class="toc-number">1.4.</span> <span class="toc-text">D - Twist the Permutation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">1.5.</span> <span class="toc-text">谢谢观看</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -287,7 +287,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -364,7 +364,7 @@
     
     <div>
       <span class="icon-copyright"></span>
-      2020-2024
+      2020-2025
       <span class="footer-info-sep rotate"></span>
       nilv
     </div>
@@ -377,10 +377,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        1.9k
+        2.8k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        00:10
+        00:14
       </div>
     
     
@@ -412,7 +412,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CodeForces-1650"><span class="toc-number">1.</span> <span class="toc-text">CodeForces 1650</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Deletions-of-Two-Adjacent-Letters"><span class="toc-number">1.1.</span> <span class="toc-text">A - Deletions of Two Adjacent Letters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-DIV-MOD"><span class="toc-number">1.2.</span> <span class="toc-text">B - DIV + MOD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Weight-of-the-System-of-Nested-Segments"><span class="toc-number">1.3.</span> <span class="toc-text">C - Weight of the System of Nested Segments**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Twist-the-Permutation"><span class="toc-number">1.4.</span> <span class="toc-text">D - Twist the Permutation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">谢谢观看</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CodeForces-1650"><span class="toc-number">1.</span> <span class="toc-text">CodeForces 1650</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Deletions-of-Two-Adjacent-Letters"><span class="toc-number">1.1.</span> <span class="toc-text">A - Deletions of Two Adjacent Letters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-DIV-MOD"><span class="toc-number">1.2.</span> <span class="toc-text">B - DIV + MOD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Weight-of-the-System-of-Nested-Segments"><span class="toc-number">1.3.</span> <span class="toc-text">C - Weight of the System of Nested Segments**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Twist-the-Permutation"><span class="toc-number">1.4.</span> <span class="toc-text">D - Twist the Permutation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E8%A7%82%E7%9C%8B"><span class="toc-number">1.5.</span> <span class="toc-text">谢谢观看</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -425,7 +425,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">2</div>
+    <div class="sidebar-state-number">3</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
