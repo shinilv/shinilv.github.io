@@ -1,0 +1,683 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_tq6stt6tcg';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.code_block = {"expand":true};</script>
+  
+  <title>
+    leetcode 第 154 场双周赛 &amp; 第 445 场周赛 |
+    
+    NILV的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="3512. 使数组和能被 K 整除的最少操作次数123456789class Solution &#123;public:    int minOperations(vector&lt;int&gt;&amp; nums, int k) &#123;        int sum  &#x3D; 0;        for(auto x : nums) sum +&#x3D; x;        int t &#x3D; su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="leetcode 第 154 场双周赛 &amp; 第 445 场周赛">
+<meta property="og:url" content="http://example.com/2025/04/14/leetcode-%E7%AC%AC-154-%E5%9C%BA%E5%8F%8C%E5%91%A8%E8%B5%9B-&-%E7%AC%AC-445-%E5%9C%BA%E5%91%A8%E8%B5%9B/index.html">
+<meta property="og:site_name" content="NILV的博客">
+<meta property="og:description" content="3512. 使数组和能被 K 整除的最少操作次数123456789class Solution &#123;public:    int minOperations(vector&lt;int&gt;&amp; nums, int k) &#123;        int sum  &#x3D; 0;        for(auto x : nums) sum +&#x3D; x;        int t &#x3D; su">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-14T10:06:28.148Z">
+<meta property="article:modified_time" content="2025-04-14T10:06:28.374Z">
+<meta property="article:author" content="nilv">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="NILV的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/">首页</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/archives">归档</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/about">关于</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/friend">友链</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="leetcode 第 154 场双周赛 &amp; 第 445 场周赛">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">leetcode 第 154 场双周赛 &amp; 第 445 场周赛</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-leetcode-第-154-场双周赛-&amp;-第-445-场周赛" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/04/14/leetcode-%E7%AC%AC-154-%E5%9C%BA%E5%8F%8C%E5%91%A8%E8%B5%9B-&-%E7%AC%AC-445-%E5%9C%BA%E5%91%A8%E8%B5%9B/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-04-14T10:06:28.148Z" itemprop="datePublished">2025-04-14</time>
+    <time style="display: none;" id="post-update-time">2025-04-14</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="3512-使数组和能被-K-整除的最少操作次数"><a href="#3512-使数组和能被-K-整除的最少操作次数" class="headerlink" title="3512. 使数组和能被 K 整除的最少操作次数"></a>3512. 使数组和能被 K 整除的最少操作次数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minOperations</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> sum  = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x : nums) sum += x;</span><br><span class="line">        <span class="type">int</span> t = sum % k;</span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3513-不同-XOR-三元组的数目-I"><a href="#3513-不同-XOR-三元组的数目-I" class="headerlink" title="3513. 不同 XOR 三元组的数目 I"></a>3513. 不同 XOR 三元组的数目 I</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">uniqueXorTriplets</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">2</span>) <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> t = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(n) &#123;</span><br><span class="line">            n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">            t++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (<span class="number">1</span> &lt;&lt; t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3514-不同-XOR-三元组的数目-II"><a href="#3514-不同-XOR-三元组的数目-II" class="headerlink" title="3514. 不同 XOR 三元组的数目 II"></a>3514. 不同 XOR 三元组的数目 II</h2><p>转化为两个两层for循环， 暴力即可</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">uniqueXorTriplets</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">        unordered_set&lt;<span class="type">int</span>&gt; mp;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; x : nums) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; y : nums) &#123;</span><br><span class="line">                mp.<span class="built_in">insert</span>(x ^ y);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        unordered_set&lt;<span class="type">int</span>&gt; se;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; x : nums) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; y : mp) &#123;</span><br><span class="line">                se.<span class="built_in">insert</span>(x ^ y);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> se.<span class="built_in">size</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3515-带权树中的最短路径"><a href="#3515-带权树中的最短路径" class="headerlink" title="3515. 带权树中的最短路径"></a>3515. 带权树中的最短路径</h2><p>这场比赛最有价值的一道题了， dfs序， 把一个树转化为一个数组使用数据结构来处理</p>
+<p>dfs序代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">in</span><span class="params">(n + <span class="number">1</span>)</span>, <span class="title">out</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> clock = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// dfs序, 通过clock 标记， 把树转化为数组， 数据结构处理修改查询</span></span><br><span class="line"><span class="keyword">auto</span> dfs = [&amp;](<span class="keyword">this</span> <span class="keyword">auto</span>&amp;&amp; dfs, <span class="type">int</span> x, <span class="type">int</span> fa) -&gt; <span class="type">void</span> &#123;</span><br><span class="line">    in[x] = ++clock;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> y : g[x]) &#123;</span><br><span class="line">        <span class="keyword">if</span>(y != fa) <span class="built_in">dfs</span>(y, x);</span><br><span class="line">    &#125;</span><br><span class="line">    out[x] = clock;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">dfs</span>(<span class="number">1</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p> 处理查询时使用树状数组+差分即可</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BinaryIndexedTree</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; tree;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">BinaryIndexedTree</span>(<span class="type">int</span> n) : <span class="built_in">tree</span>(n + <span class="number">1</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> v)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; tree.<span class="built_in">size</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            tree[i] += v;</span><br><span class="line">            i += i &amp; -i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">get</span><span class="params">(<span class="type">int</span> i)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            res += tree[i];</span><br><span class="line">            i &amp;= i - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">treeQueries</span><span class="params">(<span class="type">int</span> n, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; edges, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; queries)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">g</span>(n + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; e : edges) &#123;</span><br><span class="line">            <span class="type">int</span> x = e[<span class="number">0</span>], y = e[<span class="number">1</span>];</span><br><span class="line">            g[x].<span class="built_in">push_back</span>(y);</span><br><span class="line">            g[y].<span class="built_in">push_back</span>(x);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">in</span><span class="params">(n + <span class="number">1</span>)</span>, <span class="title">out</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="type">int</span> clock = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// dfs序, 通过clock 标记， 把树转化为数组， 数据结构处理修改查询</span></span><br><span class="line">        <span class="keyword">auto</span> dfs = [&amp;](<span class="keyword">this</span> <span class="keyword">auto</span>&amp;&amp; dfs, <span class="type">int</span> x, <span class="type">int</span> fa) -&gt; <span class="type">void</span> &#123;</span><br><span class="line">            in[x] = ++clock;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> y : g[x]) &#123;</span><br><span class="line">                <span class="keyword">if</span>(y != fa) <span class="built_in">dfs</span>(y, x);</span><br><span class="line">            &#125;</span><br><span class="line">            out[x] = clock;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="built_in">dfs</span>(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">weight</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="function">BinaryIndexedTree <span class="title">bits</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">auto</span> update = [&amp;](<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> w) &#123;</span><br><span class="line">            <span class="keyword">if</span>(in[x] &gt; in[y]) y = x;</span><br><span class="line">            <span class="type">int</span> d = w - weight[y];</span><br><span class="line">            weight[y] = w;</span><br><span class="line">            bits.<span class="built_in">add</span>(in[y], d);</span><br><span class="line">            bits.<span class="built_in">add</span>(out[y] + <span class="number">1</span>, -d);</span><br><span class="line">        &#125;;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; ans;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp;e : edges) <span class="built_in">update</span>(e[<span class="number">0</span>], e[<span class="number">1</span>], e[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; q : queries) &#123;</span><br><span class="line">            <span class="keyword">if</span>(q[<span class="number">0</span>] == <span class="number">1</span>) <span class="built_in">update</span>(q[<span class="number">1</span>], q[<span class="number">2</span>], q[<span class="number">3</span>]);</span><br><span class="line">            <span class="keyword">else</span> ans.<span class="built_in">push_back</span>(bits.<span class="built_in">get</span>(in[q[<span class="number">1</span>]]));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3516-找到最近的人"><a href="#3516-找到最近的人" class="headerlink" title="3516. 找到最近的人"></a>3516. 找到最近的人</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">findClosest</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">int</span> z)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> a = <span class="built_in">abs</span>(x - z), b = <span class="built_in">abs</span>(y - z);</span><br><span class="line">        <span class="keyword">if</span>(a == b) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(a &lt; b) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3517-最小回文排列"><a href="#3517-最小回文排列" class="headerlink" title="3517. 最小回文排列"></a>3517. 最小回文排列</h2><p>回文子序列， 只考虑前半部分即可，把前半部分排序，再用前半部分 + reverse(前半部分)。 如果n为奇数， 把第 （n  &#x2F; 2）+ 1 位加到中间即可</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">string <span class="title">smallestPalindrome</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        string t;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n / <span class="number">2</span>; i++) t += s[i];</span><br><span class="line">        <span class="built_in">sort</span>(t.<span class="built_in">begin</span>(), t.<span class="built_in">end</span>());</span><br><span class="line">        string rt = t;</span><br><span class="line">        <span class="built_in">reverse</span>(rt.<span class="built_in">begin</span>(), rt.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">if</span>(n &amp; <span class="number">1</span>) &#123;</span><br><span class="line">            t += s[n / <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        t += rt;</span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3518-最小回文排列-II"><a href="#3518-最小回文排列-II" class="headerlink" title="3518. 最小回文排列 II"></a>3518. 最小回文排列 II</h2><p>整体思路是试填法， 组合数学comb见代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">string <span class="title">smallestPalindrome</span><span class="params">(string s, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> m = n / <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> cnt[<span class="number">26</span>]&#123;&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            cnt[s[i] - <span class="string">&#x27;a&#x27;</span>]++;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">// 计算组合数学</span></span><br><span class="line">        <span class="keyword">auto</span> comb = [&amp;](<span class="type">int</span> n, <span class="type">int</span> m) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">            m = <span class="built_in">min</span>(m, n - m);</span><br><span class="line">            <span class="type">long</span> <span class="type">long</span> res = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= m; i++) &#123;</span><br><span class="line">                res = res * (n + <span class="number">1</span> - i) / i; <span class="comment">// 可以证明 这里 (n + 1 - i) / i 一定是整数</span></span><br><span class="line">                <span class="keyword">if</span>(res &gt;= k) <span class="keyword">return</span> k; <span class="comment">// res &gt; k 就没必要计算了</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">auto</span> prem = [&amp;](<span class="type">int</span> sz) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">            <span class="type">long</span> <span class="type">long</span> res = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> c : cnt) &#123;</span><br><span class="line">                <span class="keyword">if</span>(c == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="comment">// 组合数学计算总方案数</span></span><br><span class="line">                res *= <span class="built_in">comb</span>(sz, c);</span><br><span class="line">                <span class="keyword">if</span>(res &gt;= k) &#123;</span><br><span class="line">                    <span class="keyword">return</span> k;</span><br><span class="line">                &#125;</span><br><span class="line">                sz -= c;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 判断排列情况是否大于等于k</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">prem</span>(m) &lt; k) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function">string <span class="title">t</span><span class="params">(m, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">26</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!cnt[j]) <span class="keyword">continue</span>;</span><br><span class="line">                cnt[j]--;</span><br><span class="line">                <span class="type">int</span> p = <span class="built_in">prem</span>(m - i - <span class="number">1</span>);</span><br><span class="line">                <span class="comment">// 试填法， 如果把这个字符填入当前位置， 排列数是否满足条件</span></span><br><span class="line">                <span class="keyword">if</span>(p &gt;= k) &#123;</span><br><span class="line">                    t[i] = <span class="string">&#x27;a&#x27;</span> + j;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//这个位置不能填 ‘a’ + j， 排列 - p， 表示当前减去了第k之前的p个排列 </span></span><br><span class="line">                k -= p;</span><br><span class="line">          </span><br><span class="line">                cnt[j]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        string ans = t;</span><br><span class="line">        ranges::<span class="built_in">reverse</span>(t);</span><br><span class="line">        <span class="keyword">if</span>(n &amp; <span class="number">1</span>) &#123;</span><br><span class="line">            ans += s[n / <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans + t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3519-统计逐位非递减的整数"><a href="#3519-统计逐位非递减的整数" class="headerlink" title="3519. 统计逐位非递减的整数"></a>3519. 统计逐位非递减的整数</h2><p>先把10进制转化为b进制， 这样直接计算b 进制下满足条件的数量即可</p>
+<p>数位dp 板子题， 最大挑战就是进制转换了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MOD = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">calc</span><span class="params">(string s, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">memo</span>(n + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>, <span class="number">-1</span>));</span><br><span class="line">        <span class="keyword">auto</span> dfs = [&amp;](<span class="keyword">auto</span>&amp;&amp; dfs, <span class="type">int</span> i, <span class="type">bool</span> is_limit, <span class="type">bool</span> is_num, <span class="type">int</span> pre) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(i == n)  &#123;</span><br><span class="line">                <span class="keyword">return</span> is_num;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(!is_num) &#123;</span><br><span class="line">                res = (res + <span class="built_in">dfs</span>(dfs, i + <span class="number">1</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="number">0</span>)) % MOD;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!is_limit &amp;&amp; is_num &amp;&amp; memo[i][pre] != <span class="number">-1</span>) <span class="keyword">return</span> memo[i][pre];</span><br><span class="line">            <span class="type">int</span> up = is_limit ? s[i] - <span class="string">&#x27;0&#x27;</span> : b - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> d = <span class="number">1</span> - is_num; d &lt;= up; d++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!is_num) &#123;</span><br><span class="line">                    res = (res + <span class="built_in">dfs</span>(dfs, i + <span class="number">1</span>, is_limit &amp;&amp; d == up, <span class="literal">true</span>, d)) % MOD;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">if</span>(d &gt;= pre) &#123;</span><br><span class="line">                        res = (res + <span class="built_in">dfs</span>(dfs, i + <span class="number">1</span>, is_limit &amp;&amp; d == up, <span class="literal">true</span>, d)) % MOD;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!is_limit &amp;&amp; is_num) memo[i][pre] = res;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">dfs</span>(dfs, <span class="number">0</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">string <span class="title">func</span><span class="params">(string s, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">        string result;</span><br><span class="line">        <span class="keyword">while</span> (!s.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="type">int</span> remainder = <span class="number">0</span>;</span><br><span class="line">            string quotient;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">char</span> c : s) &#123;</span><br><span class="line">                <span class="type">int</span> current = remainder * <span class="number">10</span> + (c - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">                <span class="keyword">if</span> (current &lt; b &amp;&amp; quotient.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">                    remainder = current;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    quotient.<span class="built_in">push_back</span>(current / b + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">                    remainder = current % b;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            result.<span class="built_in">push_back</span>(remainder + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">            s = quotient;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">reverse</span>(result.<span class="built_in">begin</span>(), result.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">countNumbers</span><span class="params">(string low, string high, <span class="type">int</span> b)</span> </span>&#123;       </span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = low.<span class="built_in">size</span>(); i--; i &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(low[i] &gt; <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">                low[i]--;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                low[i] = <span class="string">&#x27;9&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        high = <span class="built_in">func</span>(high, b);</span><br><span class="line">        low = <span class="built_in">func</span>(low, b);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">calc</span>(high, b) - <span class="built_in">calc</span>(low, b) + MOD) % MOD;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>以上两场是2025 4.12 和 4.13 的leetcode 周赛， </p>
+<p>。。。 端正态度</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/images/banner.webp" data-sizes="auto" alt="Linux_2" class="lazyload">
+        
+      
+      <a href="/2025/04/08/Linux_2/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          Linux_2
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#3512-%E4%BD%BF%E6%95%B0%E7%BB%84%E5%92%8C%E8%83%BD%E8%A2%AB-K-%E6%95%B4%E9%99%A4%E7%9A%84%E6%9C%80%E5%B0%91%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">3512. 使数组和能被 K 整除的最少操作次数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3513-%E4%B8%8D%E5%90%8C-XOR-%E4%B8%89%E5%85%83%E7%BB%84%E7%9A%84%E6%95%B0%E7%9B%AE-I"><span class="toc-number">2.</span> <span class="toc-text">3513. 不同 XOR 三元组的数目 I</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3514-%E4%B8%8D%E5%90%8C-XOR-%E4%B8%89%E5%85%83%E7%BB%84%E7%9A%84%E6%95%B0%E7%9B%AE-II"><span class="toc-number">3.</span> <span class="toc-text">3514. 不同 XOR 三元组的数目 II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3515-%E5%B8%A6%E6%9D%83%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84"><span class="toc-number">4.</span> <span class="toc-text">3515. 带权树中的最短路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3516-%E6%89%BE%E5%88%B0%E6%9C%80%E8%BF%91%E7%9A%84%E4%BA%BA"><span class="toc-number">5.</span> <span class="toc-text">3516. 找到最近的人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3517-%E6%9C%80%E5%B0%8F%E5%9B%9E%E6%96%87%E6%8E%92%E5%88%97"><span class="toc-number">6.</span> <span class="toc-text">3517. 最小回文排列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3518-%E6%9C%80%E5%B0%8F%E5%9B%9E%E6%96%87%E6%8E%92%E5%88%97-II"><span class="toc-number">7.</span> <span class="toc-text">3518. 最小回文排列 II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3519-%E7%BB%9F%E8%AE%A1%E9%80%90%E4%BD%8D%E9%9D%9E%E9%80%92%E5%87%8F%E7%9A%84%E6%95%B4%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">3519. 统计逐位非递减的整数</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="nilv" class="lazyload">
+  <div class="sidebar-author-name">nilv</div>
+  <div class="sidebar-description">希望你能得到些什么</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">14</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2025
+      <span class="footer-info-sep rotate"></span>
+      nilv
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        13.2k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:04
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#3512-%E4%BD%BF%E6%95%B0%E7%BB%84%E5%92%8C%E8%83%BD%E8%A2%AB-K-%E6%95%B4%E9%99%A4%E7%9A%84%E6%9C%80%E5%B0%91%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">3512. 使数组和能被 K 整除的最少操作次数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3513-%E4%B8%8D%E5%90%8C-XOR-%E4%B8%89%E5%85%83%E7%BB%84%E7%9A%84%E6%95%B0%E7%9B%AE-I"><span class="toc-number">2.</span> <span class="toc-text">3513. 不同 XOR 三元组的数目 I</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3514-%E4%B8%8D%E5%90%8C-XOR-%E4%B8%89%E5%85%83%E7%BB%84%E7%9A%84%E6%95%B0%E7%9B%AE-II"><span class="toc-number">3.</span> <span class="toc-text">3514. 不同 XOR 三元组的数目 II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3515-%E5%B8%A6%E6%9D%83%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84"><span class="toc-number">4.</span> <span class="toc-text">3515. 带权树中的最短路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3516-%E6%89%BE%E5%88%B0%E6%9C%80%E8%BF%91%E7%9A%84%E4%BA%BA"><span class="toc-number">5.</span> <span class="toc-text">3516. 找到最近的人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3517-%E6%9C%80%E5%B0%8F%E5%9B%9E%E6%96%87%E6%8E%92%E5%88%97"><span class="toc-number">6.</span> <span class="toc-text">3517. 最小回文排列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3518-%E6%9C%80%E5%B0%8F%E5%9B%9E%E6%96%87%E6%8E%92%E5%88%97-II"><span class="toc-number">7.</span> <span class="toc-text">3518. 最小回文排列 II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3519-%E7%BB%9F%E8%AE%A1%E9%80%90%E4%BD%8D%E9%9D%9E%E9%80%92%E5%87%8F%E7%9A%84%E6%95%B4%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">3519. 统计逐位非递减的整数</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="nilv" class="lazyload">
+  <div class="sidebar-author-name">nilv</div>
+  <div class="sidebar-description">希望你能得到些什么</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">14</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.2.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+
+  </body>
+  <script src="/js/<file>"></script>
+    <link rel="stylesheet" href="/css/<file>" />
+
+    <canvas id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"></canvas>
+    <script src="https://s4.zstatic.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+
+    <canvas id="background"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"></canvas>
+    <script src="/js/background.min.js"></script>
+  </html>
+
