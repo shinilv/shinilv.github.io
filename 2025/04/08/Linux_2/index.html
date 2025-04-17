@@ -27,15 +27,15 @@
 
   
   
-    <meta name="description" content="Linux上开发vim编辑器">
+    <meta name="description" content="Linux上开发vim编辑器插入模式 ：编辑模式 命令模式： 允许通过命令 进行文本编辑控制 底行模式：vim和shell 进行交互 （执行shell命令 命令模式-i 进入插入模式 -a 进入插入模式同时光标到下一个位置 -o 进入插入模式同时光标到下一行 n + yy  连续复制n行 n + p 连续粘贴n次 -u 撤销操作 n + d 删除d行 -$  快速把光标定位到当前行结尾 -^ 快速">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux_2">
 <meta property="og:url" content="http://example.com/2025/04/08/Linux_2/index.html">
 <meta property="og:site_name" content="NILV的博客">
-<meta property="og:description" content="Linux上开发vim编辑器">
+<meta property="og:description" content="Linux上开发vim编辑器插入模式 ：编辑模式 命令模式： 允许通过命令 进行文本编辑控制 底行模式：vim和shell 进行交互 （执行shell命令 命令模式-i 进入插入模式 -a 进入插入模式同时光标到下一个位置 -o 进入插入模式同时光标到下一行 n + yy  连续复制n行 n + p 连续粘贴n次 -u 撤销操作 n + d 删除d行 -$  快速把光标定位到当前行结尾 -^ 快速">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-08T14:19:52.943Z">
-<meta property="article:modified_time" content="2025-04-08T16:18:45.718Z">
+<meta property="article:modified_time" content="2025-04-17T01:46:33.518Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2025/04/08/Linux_2/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-04-08T14:19:52.943Z" itemprop="datePublished">2025-04-08</time>
-    <time style="display: none;" id="post-update-time">2025-04-09</time>
+    <time style="display: none;" id="post-update-time">2025-04-17</time>
   </a>
 </div>
 
@@ -205,7 +205,48 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
       
-        <h2 id="Linux上开发"><a href="#Linux上开发" class="headerlink" title="Linux上开发"></a>Linux上开发</h2><h3 id="vim编辑器"><a href="#vim编辑器" class="headerlink" title="vim编辑器"></a>vim编辑器</h3>
+        <h2 id="Linux上开发"><a href="#Linux上开发" class="headerlink" title="Linux上开发"></a>Linux上开发</h2><h3 id="vim编辑器"><a href="#vim编辑器" class="headerlink" title="vim编辑器"></a>vim编辑器</h3><p>插入模式 ：编辑模式</p>
+<p>命令模式： 允许通过命令 进行文本编辑控制</p>
+<p>底行模式：vim和shell 进行交互 （执行shell命令</p>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>-i 进入插入模式</p>
+<p>-a 进入插入模式同时光标到下一个位置</p>
+<p>-o 进入插入模式同时光标到下一行</p>
+<p>n + yy  连续复制n行</p>
+<p>n + p 连续粘贴n次</p>
+<p>-u 撤销操作</p>
+<p>n + d 删除d行</p>
+<p>-$  快速把光标定位到当前行结尾</p>
+<p>-^ 快速把光标定位到当前行开头</p>
+<p>-gg 定位到文本最开始</p>
+<p>-G 定位到文本最结尾</p>
+<p>n + G 光标定位到n行</p>
+<p>n + (h, j, k, l 方向定位, 移动指定n个位置</p>
+<p>w，b 按照单词进行光标前后移动</p>
+<p>~ 大小写切换</p>
+<h3 id="底行模式"><a href="#底行模式" class="headerlink" title="底行模式"></a>底行模式</h3><p>退出vim ： wq 保存退出</p>
+<p>关键字搜索 &#x2F; + 关键字</p>
+<p>！+ 命令， 执行命令</p>
+<h3 id="Linux编译器-gcc-g"><a href="#Linux编译器-gcc-g" class="headerlink" title="Linux编译器 gcc, g++"></a>Linux编译器 gcc, g++</h3><p>gcc只能编译c语言， g++可以编译c和c++</p>
+<p>例如 g++ test.cc  -o you.exe   -std&#x3D;c++11</p>
+<h4 id="程序翻译过程"><a href="#程序翻译过程" class="headerlink" title="程序翻译过程"></a>程序翻译过程</h4><p>翻译过程  </p>
+<p>预处理 ：  g++ -E test.cc –o test.i</p>
+<p>编译： g++ -S test.i -o test.s</p>
+<p>汇编 g++ -c test.s -o test.o</p>
+<p>链接 g++ test.o -o my.exe</p>
+<p>linux 链接时， 有两种链接方式</p>
+<p><strong>动态链接</strong> ： 动态库， .so</p>
+<p>节省资源， 不能丢失</p>
+<p><strong>静态链接</strong>： 静态库  .a</p>
+<p>g++ -o mytest_static test.c -static</p>
+<p>每次链接都需要把库拷贝一份， 一旦形成和库就无关了， 无运行依赖</p>
+<h3 id="makefile-make"><a href="#makefile-make" class="headerlink" title="makefile &#x2F; make"></a>makefile &#x2F; make</h3><p>用于快速编译</p>
+<p>最简单的makefile</p>
+<p>makefile 默认执行一对依赖关系 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（目标文件）mytest:test.cc（依赖文件列表， 如果有多个文件用空格划分）</span><br><span class="line">	g++ -o mytest test.cc -std=c++11 （依赖方法） // make 命令构建</span><br><span class="line">.PHONY:clean // 修饰下面总是能被执行</span><br><span class="line">clean:</span><br><span class="line">	rm -f mytest // make clean 命令清理</span><br></pre></td></tr></table></figure>
+
+
+
+
       
     </div>
     <footer class="article-footer">
@@ -278,7 +319,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E4%B8%8A%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">Linux上开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">vim编辑器</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E4%B8%8A%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">Linux上开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">vim编辑器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">命令模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%95%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">底行模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%BC%96%E8%AF%91%E5%99%A8-gcc-g"><span class="toc-number">1.4.</span> <span class="toc-text">Linux编译器 gcc, g++</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%BF%BB%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">程序翻译过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#makefile-make"><span class="toc-number">1.5.</span> <span class="toc-text">makefile &#x2F; make</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -381,7 +422,7 @@
     
       <div>
         <span class="icon-brush"></span>
-        13.2k
+        13.7k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         01:04
@@ -416,7 +457,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E4%B8%8A%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">Linux上开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">vim编辑器</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux%E4%B8%8A%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">Linux上开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text">vim编辑器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">命令模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%95%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">底行模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%BC%96%E8%AF%91%E5%99%A8-gcc-g"><span class="toc-number">1.4.</span> <span class="toc-text">Linux编译器 gcc, g++</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%BF%BB%E8%AF%91%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">程序翻译过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#makefile-make"><span class="toc-number">1.5.</span> <span class="toc-text">makefile &#x2F; make</span></a></li></ol></li></ol>
       
   </div>
 </div>
