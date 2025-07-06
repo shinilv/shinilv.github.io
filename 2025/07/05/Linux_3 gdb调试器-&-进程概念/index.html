@@ -12,7 +12,7 @@
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_tq6stt6tcg';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.code_block = {"expand":true};</script>
   
   <title>
-    Linux_gdb调试器 &amp; 进程概念 |
+    Linux_3 操作系统 |
     
     NILV的博客
   </title>
@@ -27,15 +27,15 @@
 
   
   
-    <meta name="description" content="gdb 调试器进程">
+    <meta name="description" content="## 认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux_gdb调试器 &amp; 进程概念">
+<meta property="og:title" content="Linux_3 操作系统">
 <meta property="og:url" content="http://example.com/2025/07/05/Linux_3%20gdb%E8%B0%83%E8%AF%95%E5%99%A8-&-%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="NILV的博客">
-<meta property="og:description" content="gdb 调试器进程">
+<meta property="og:description" content="## 认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-05T13:46:25.662Z">
-<meta property="article:modified_time" content="2025-07-05T13:46:25.762Z">
+<meta property="article:modified_time" content="2025-07-06T05:12:11.406Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -161,7 +161,7 @@
 <header id="header">
   
     
-      <img fetchpriority="high" src="/images/banner.webp" alt="Linux_gdb调试器 &amp; 进程概念">
+      <img fetchpriority="high" src="/images/banner.webp" alt="Linux_3 操作系统">
     
   
   <div id="header-outer">
@@ -170,7 +170,7 @@
         
         
           <a href="/" id="logo">
-            <h1 data-aos="slide-up">Linux_gdb调试器 &amp; 进程概念</h1>
+            <h1 data-aos="slide-up">Linux_3 操作系统</h1>
           </a>
         
       
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2025/07/05/Linux_3%20gdb%E8%B0%83%E8%AF%95%E5%99%A8-&-%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-07-05T13:46:25.662Z" itemprop="datePublished">2025-07-05</time>
-    <time style="display: none;" id="post-update-time">2025-07-05</time>
+    <time style="display: none;" id="post-update-time">2025-07-06</time>
   </a>
 </div>
 
@@ -205,7 +205,14 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
       
-        <h2 id="gdb-调试器"><a href="#gdb-调试器" class="headerlink" title="gdb 调试器"></a>gdb 调试器</h2><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2>
+        <h2 id="认识冯诺依曼系统"><a href="#认识冯诺依曼系统" class="headerlink" title="## 认识冯诺依曼系统"></a>## 认识冯诺依曼系统</h2><p>硬件按照一定的规则组装形成计算机</p>
+<p>冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家<strong>约翰·冯·诺依曼</strong>（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">冯诺依曼体系结构将计算机分为五大基本部件：</span><br><span class="line"></span><br><span class="line">运算器（ALU, Arithmetic Logic Unit）</span><br><span class="line"></span><br><span class="line">负责所有算术运算（加减乘除）和逻辑运算（与或非）。</span><br><span class="line"></span><br><span class="line">控制器（Control Unit）</span><br><span class="line"></span><br><span class="line">从内存读取指令，解码并协调其他部件工作（如控制数据流向）。</span><br><span class="line"></span><br><span class="line">存储器（Memory）</span><br><span class="line"></span><br><span class="line">存储程序指令和数据（现代计算机分为高速缓存、主存、外存等层次）。</span><br><span class="line"></span><br><span class="line">输入设备（Input Devices）</span><br><span class="line"></span><br><span class="line">将外部数据或指令输入计算机（如键盘、鼠标）。</span><br><span class="line"></span><br><span class="line">输出设备（Output Devices）</span><br><span class="line"></span><br><span class="line">将处理结果输出（如显示器、打印机）。</span><br></pre></td></tr></table></figure>
+
+<p>数据是在计算机体系结构中进行流动的， 从一个设备到另一个设备， 本质是一种拷贝</p>
+<p>数据设备的拷贝效率决定了整机的基本效率</p>
+<p>存储器用来弥补设备间的效率差距</p>
+
       
     </div>
     <footer class="article-footer">
@@ -262,7 +269,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb-%E8%B0%83%E8%AF%95%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">gdb 调试器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">## 认识冯诺依曼系统</span></a></li></ol>
       
   </div>
 </div>
@@ -365,10 +372,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        14.6k
+        15.2k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:09
+        01:10
       </div>
     
     
@@ -400,7 +407,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#gdb-%E8%B0%83%E8%AF%95%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">gdb 调试器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">## 认识冯诺依曼系统</span></a></li></ol>
       
   </div>
 </div>
