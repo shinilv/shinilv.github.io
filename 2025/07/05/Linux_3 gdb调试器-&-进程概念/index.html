@@ -27,15 +27,15 @@
 
   
   
-    <meta name="description" content="## 认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12">
+    <meta name="description" content="认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12345">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux_3 操作系统">
 <meta property="og:url" content="http://example.com/2025/07/05/Linux_3%20gdb%E8%B0%83%E8%AF%95%E5%99%A8-&-%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="NILV的博客">
-<meta property="og:description" content="## 认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12">
+<meta property="og:description" content="认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12345">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-05T13:46:25.662Z">
-<meta property="article:modified_time" content="2025-07-06T05:12:11.406Z">
+<meta property="article:modified_time" content="2025-07-11T11:14:49.088Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2025/07/05/Linux_3%20gdb%E8%B0%83%E8%AF%95%E5%99%A8-&-%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-07-05T13:46:25.662Z" itemprop="datePublished">2025-07-05</time>
-    <time style="display: none;" id="post-update-time">2025-07-06</time>
+    <time style="display: none;" id="post-update-time">2025-07-11</time>
   </a>
 </div>
 
@@ -205,13 +205,64 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
       
-        <h2 id="认识冯诺依曼系统"><a href="#认识冯诺依曼系统" class="headerlink" title="## 认识冯诺依曼系统"></a>## 认识冯诺依曼系统</h2><p>硬件按照一定的规则组装形成计算机</p>
+        <h2 id="认识冯诺依曼系统"><a href="#认识冯诺依曼系统" class="headerlink" title="认识冯诺依曼系统"></a>认识冯诺依曼系统</h2><p>硬件按照一定的规则组装形成计算机</p>
 <p>冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家<strong>约翰·冯·诺依曼</strong>（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">冯诺依曼体系结构将计算机分为五大基本部件：</span><br><span class="line"></span><br><span class="line">运算器（ALU, Arithmetic Logic Unit）</span><br><span class="line"></span><br><span class="line">负责所有算术运算（加减乘除）和逻辑运算（与或非）。</span><br><span class="line"></span><br><span class="line">控制器（Control Unit）</span><br><span class="line"></span><br><span class="line">从内存读取指令，解码并协调其他部件工作（如控制数据流向）。</span><br><span class="line"></span><br><span class="line">存储器（Memory）</span><br><span class="line"></span><br><span class="line">存储程序指令和数据（现代计算机分为高速缓存、主存、外存等层次）。</span><br><span class="line"></span><br><span class="line">输入设备（Input Devices）</span><br><span class="line"></span><br><span class="line">将外部数据或指令输入计算机（如键盘、鼠标）。</span><br><span class="line"></span><br><span class="line">输出设备（Output Devices）</span><br><span class="line"></span><br><span class="line">将处理结果输出（如显示器、打印机）。</span><br></pre></td></tr></table></figure>
 
 <p>数据是在计算机体系结构中进行流动的， 从一个设备到另一个设备， 本质是一种拷贝</p>
 <p>数据设备的拷贝效率决定了整机的基本效率</p>
 <p>存储器用来弥补设备间的效率差距</p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p>是一款软硬件资源管理的软件， 核心六个字： <strong>先描述， 再组织</strong></p>
+<p>操作系统的内核 + 操作系统的外壳程序（给用户提供操作）</p>
+<p>操作系统 ： 进程管理， 内存管理， 文件管理， 驱动管理。</p>
+<p>操作系统与硬件层存在驱动层， 方便操作系统管理</p>
+<p>用户直接使用操作系统是复杂的并且不安全的， 所以操作系统提供了系统调用接口（system call）</p>
+<p>用户直接调用系统接口，有一些难度，所以用户通过用户操作接口操作（shell）</p>
+<p>向上提供稳定 高效 安全 的运行环境</p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>操作系统中同时存在非常多的进程， 操作系统依旧通过先描述再组织的方式管理进程</p>
+<p>基本概念：进程是<strong>正在执行的程序实例</strong>，是操作系统进行资源分配和调度的基本单位。它不仅包含程序的代码（文本段），还包括当前的活动状态（如程序计数器、寄存器值）、堆栈（临时数据）、数据段（全局变量）以及占用的系统资源（如打开的文件、内存等）。</p>
+<p>内核观念： 担当分配系统资源（cpu时间， 内存）的实体</p>
+<p>一个可执行程序， 是在磁盘中的文件， 执行这个程序，需要把这个二进制程序加载到内存中， 存在一个结构体(PCB) 包含进程的所有属性 （id， 优先级…） </p>
+<h3 id="进程的组成"><a href="#进程的组成" class="headerlink" title="进程的组成"></a><strong>进程的组成</strong></h3><ul>
+<li><strong>PCB（Process Control Block）</strong>：操作系统为每个进程维护的数据结构，包含：<ul>
+<li><strong>进程ID（PID）</strong>：唯一标识符。</li>
+<li><strong>进程状态</strong>：如就绪、运行、阻塞等。</li>
+<li><strong>程序计数器</strong>：指向下一条要执行的指令。</li>
+<li><strong>寄存器值</strong>：CPU上下文（如累加器、栈指针）。</li>
+<li><strong>内存管理信息</strong>：页表、内存限制等。</li>
+<li><strong>I&#x2F;O状态</strong>：分配的设备、打开的文件列表。</li>
+</ul>
+</li>
+<li><strong>代码段</strong>：程序的指令（只读）。</li>
+<li><strong>数据段</strong>：全局变量、静态变量。</li>
+<li><strong>堆栈段</strong>：局部变量、函数调用信息。</li>
+</ul>
+<h3 id="理解进程"><a href="#理解进程" class="headerlink" title="理解进程"></a>理解进程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while :; do ps ajx | head -1 &amp;&amp; ps ajx | grep myprocess; sleep 1; done # 查看进程</span><br></pre></td></tr></table></figure>
+
+
+
+<p>把对进程的管理转换为对链表（PCB组成的）的管理</p>
+<p><strong>进程是 tast_struct + 程序</strong></p>
+<p>linux 下绝大多数指令本质都是运行进程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps ajx | head -1 &amp;&amp; ps ajx | grep [可执行程序] # 查看进程信息和状态</span><br></pre></td></tr></table></figure>
+
+<p>进程关键属性 PID： 每一个进程的唯一标识符</p>
+<p>用户不能直接访问进程获得进程PID, 系统提供了调用接口 pid_t  geipid()</p>
+<p>gitppid() 获得进程的父进程</p>
+<p>ctrl + c &#x2F; kill -9 [pid] 结束进程</p>
+<p>一个进程每次启动pid 不同， ppid是相同的</p>
+<p>pid_t fork() 创建子进程</p>
+<p>forK() 之后父子进程代码共享</p>
+<p><strong>观察运行结果</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;process is running... pid : %d\n&quot;</span>, getpid());</span><br><span class="line">	sleep(<span class="number">3</span>);</span><br><span class="line">	fork();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;hello world, pdd : %d, ppid : %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">	sleep(<span class="number">4</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>fork 返回两次（fork 函数内部子进程已经创建）， 返回0表示子进程， 返回-1表示进程创建失败</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;process is running... pid : %d\n&quot;</span>, getpid());</span><br><span class="line">	sleep(<span class="number">3</span>);</span><br><span class="line">	<span class="type">pid_t</span> id = fork();</span><br><span class="line">	<span class="keyword">if</span>(id == <span class="number">-1</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span>(id == <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;hello i am child process, pdd : %d, ppid : %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">			sleep(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;hello i am parents process, pdd : %d, ppid : %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">			sleep(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进程一定要做到， 进程具有独立性</p>
+<p>同时创建多个进程 代码示例</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RunChild</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;I am child, pdi %d, ppid %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> num = <span class="number">5</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">		<span class="type">pid_t</span> id = fork();</span><br><span class="line">		<span class="keyword">if</span>(id == <span class="number">0</span>) &#123;</span><br><span class="line">			RunChild();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;I am parent, pdi %d, ppid %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -269,7 +320,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">## 认识冯诺依曼系统</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">认识冯诺依曼系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">进程的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">理解进程</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -372,10 +423,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        15.2k
+        16.2k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:10
+        01:14
       </div>
     
     
@@ -407,7 +458,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">## 认识冯诺依曼系统</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">认识冯诺依曼系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">进程的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">理解进程</span></a></li></ol></li></ol>
       
   </div>
 </div>
