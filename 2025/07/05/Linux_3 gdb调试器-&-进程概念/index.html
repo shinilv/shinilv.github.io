@@ -35,7 +35,7 @@
 <meta property="og:description" content="认识冯诺依曼系统硬件按照一定的规则组装形成计算机 冯诺依曼体系结构（Von Neumann Architecture）是现代计算机设计的理论基础，由美籍匈牙利数学家约翰·冯·诺依曼（John von Neumann）及其团队在1945年提出，并在报告《First Draft of a Report on the EDVAC》中首次系统阐述。这一结构至今仍是绝大多数计算机的核心设计框架。 12345">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-05T13:46:25.662Z">
-<meta property="article:modified_time" content="2025-07-11T11:14:49.088Z">
+<meta property="article:modified_time" content="2025-07-16T14:37:04.876Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2025/07/05/Linux_3%20gdb%E8%B0%83%E8%AF%95%E5%99%A8-&-%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-07-05T13:46:25.662Z" itemprop="datePublished">2025-07-05</time>
-    <time style="display: none;" id="post-update-time">2025-07-11</time>
+    <time style="display: none;" id="post-update-time">2025-07-16</time>
   </a>
 </div>
 
@@ -263,7 +263,106 @@
 <p>同时创建多个进程 代码示例</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RunChild</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;I am child, pdi %d, ppid %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> num = <span class="number">5</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">		<span class="type">pid_t</span> id = fork();</span><br><span class="line">		<span class="keyword">if</span>(id == <span class="number">0</span>) &#123;</span><br><span class="line">			RunChild();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;I am parent, pdi %d, ppid %d\n&quot;</span>, getpid(), getppid());</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>pcb中存在一个cwb（current work dir），  每个进程启动的时候， 会记录自己当前那个路径启动</p>
+<h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><p>linux 进程状态</p>
+<p>tast_struct 中的一个标志位， 表示状态， int status</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    while(1) &#123;</span><br><span class="line">        printf(&quot;run..,\n&quot;);</span><br><span class="line">        sleep(1);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>S： 上述代码运行， 大部分状态是S(等待)，cpu的速度远大于显示器调度的速度， S是休眠状态。</p>
+<p>T 状态，让进程暂停， kill -19 [进程id] 暂停进程， kill -18 [进程id] 开始进程，</p>
+<p>代码调试本质就是进程暂停</p>
+<p>D disk sleep 状态， linux操作系统有权杀掉进程，释放空间， D状态表示该进程不可被杀掉（一i些重要的不可被中断的进程）</p>
+<p>状态 Z， 僵尸进程，已经运行完毕， 但是需要维持自己的退出信息， 未来让自己的父进程进行读取。如果没有父进程读取， 僵尸进程会一直存在</p>
+<p>孤儿进程： 父进程比子进程先退出</p>
+<p>下面代码观察僵尸进程和孤儿进程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> id = fork();</span><br><span class="line">    <span class="keyword">if</span>(id == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// child</span></span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;i am child, cnt : %d\n&quot;</span>, cnt);</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">            cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="comment">// parents</span></span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">while</span>(cnt) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;i am parent, running ... pid : %d\n&quot;</span>, getpid());</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">            cnt--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// while(1) &#123;</span></span><br><span class="line">    <span class="comment">//     printf(&quot;run..,\n&quot;);</span></span><br><span class="line">    <span class="comment">//     sleep(1);</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>命令行中的进程，父进程是bash，会自动回收， 不会出现僵尸进程</p>
+<p>进程在运行队列中， 该进程的状态是就绪状态。cpu有自己的运行队列</p>
+<p>一个进程一但持有了cpu， 并不会一直运行该进程。</p>
+<p>进程间是基于时间片轮番调度的，多个进程以切换的方式进行， 这就是并发。<strong>linux不是这么调用的</strong></p>
+<h4 id="阻塞状态"><a href="#阻塞状态" class="headerlink" title="阻塞状态"></a>阻塞状态</h4><p>在计算机科学和操作系统领域，<strong>阻塞状态</strong>（Blocked State）是指一个进程或线程因为等待某些资源或事件而暂时无法继续执行的状态。</p>
+<p><strong>定义</strong><br>当一个进程&#x2F;线程因某些条件未满足（如等待I&#x2F;O操作完成、获取锁、收到信号等）时，操作系统会将其移出<strong>就绪队列</strong>，使其进入阻塞状态。此时，它不会占用CPU资源，直到所需条件满足。</p>
+<h4 id="挂起状态（Suspended-State）"><a href="#挂起状态（Suspended-State）" class="headerlink" title="挂起状态（Suspended State）"></a><strong>挂起状态（Suspended State）</strong></h4><p>是指进程被暂时移出内存（换出到外存，如磁盘），并处于一种<strong>静止状态</strong>，直到被重新激活。挂起通常由操作系统或用户主动触发，目的是释放内存资源或控制进程的执行。</p>
+<p>进程在切换， 最重要的是上下文数据的保存和恢复</p>
+<h3 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h3><p>在 Linux 系统中，进程优先级决定了进程获取 CPU 资源的顺序。优先级高的进程会优先获得 CPU 时间。Linux 使用两种不同的优先级机制：<strong>静态优先级（Nice 值）</strong>和<strong>动态优先级（实时优先级）</strong>。</p>
+<p>操作系统中优先级尽量不对进程优先级进行改动。这块不是很重要</p>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><p>main函数带参， int main(int argc, char *argv[]) {}</p>
+<p>这些参数可带可不带</p>
+<p>在C和C++程序中，<code>main</code>函数可以带有参数，这允许程序从命令行接收输入。这种带参数的<code>main</code>函数形式通常用于处理命令行参数。</p>
+<p>argv[0] 表示程序名称</p>
+<p>命令行输入 .&#x2F;myprocess 1 观察结果·</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">strcmp</span>(argv[<span class="number">1</span>] , <span class="string">&quot;1&quot;</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;hello 1\n&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">strcmp</span>(argv[<span class="number">1</span>] , <span class="string">&quot;2&quot;</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;hello 2\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>命令行参数本质是交给程序不同的选项， 执行不同的程序功能</p>
+<p>命令行参数是父进程bash传递的</p>
+<h4 id="环境变量-1"><a href="#环境变量-1" class="headerlink" title="环境变量"></a>环境变量</h4><p>执行命令和执行程序是一个意思， 但是执行我们所i写程序必须指明程序路径。“ls”, “pwd” 这些命令就不需要。</p>
+<p>主要原因是linux系统中存在一些全局变量，告诉命令解释器， 应该去那些路径下寻找可执行程序</p>
+<p>系统中很多的配置， 登录时已经加载到了bash进程中。</p>
+<p>PATH， 打印环境变量 $PATH。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo $PATH  # 显示环境变量</span><br><span class="line">结果 ： /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin</span><br></pre></td></tr></table></figure>
+
+<p>bash在执行命令时， 需要先找到命令， 然后把二进制程序加载到进程。bash就是在PATH中找。</p>
+<p>ls 所在的命令在 &#x2F;usr&#x2F;bin中， 所以不需要路径</p>
+<p>可以选择把自己的某个目录加到环境变量中， </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=&amp;PATH:[路径] # 但是这只是内存级的， 重新登录就会回复</span><br></pre></td></tr></table></figure>
+
+<p>最开始的环境变量不是在内存中的， 而是在系统的配置文件中。</p>
+<p>执行内建命令不需要创建子进程</p>
+<h3 id="程序的地址空间"><a href="#程序的地址空间" class="headerlink" title="程序的地址空间"></a>程序的地址空间</h3><p>观察代码结果</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> g_val = <span class="number">100000</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;I am father process, pid: %d, g_val: %d\n&quot;</span>, getpid(), g_val);</span><br><span class="line">    sleep(<span class="number">3</span>);</span><br><span class="line">    <span class="type">pid_t</span> id = fork();</span><br><span class="line">    <span class="keyword">if</span> (id == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// child</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;I am child process, pid: %d, g_val: %d, address: %p\n&quot;</span>, getpid(), g_val, &amp;g_val);</span><br><span class="line">            g_val--;</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// father</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;I am father process, pid: %d, g_val: %d, address: %p\n&quot;</span>, getpid(), g_val, &amp;g_val);</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>g_val 同时出现了两个值。这是满足进程间数据的独立性。</p>
+<p>他们的地址却是相同的：这个地址不是真正的地址， 而是虚拟地址</p>
+<p> 虚拟地址通过页表对应物理地址， 当子进程修改数据时， 会重新分配物理地址（操作系统自主进行<strong>写时拷贝</strong>）</p>
+<p>每个进程都会分配一个地址空间</p>
+<p>地址空间的本质就是内核中的一个结构体对象</p>
+<p>地址空间的意义： 将无序变为有序，让进程以统一的视角看待物理内存以及自己运行的各个区域</p>
+<p>将进程管理模块和内存管理进行解耦</p>
+<p>地址空间的设计从根本上解决了以下几个核心问题：</p>
+<ol>
+<li><strong>如何让多个程序安全地共享物理内存</strong> → 通过虚拟化提供隔离</li>
+<li><strong>如何让程序不受物理内存限制</strong> → 通过分页&#x2F;交换机制扩展</li>
+<li><strong>如何简化程序的内存访问</strong> → 提供统一的线性地址视图</li>
+<li><strong>如何保护系统核心不受破坏</strong> → 划分用户&#x2F;内核空间</li>
+</ol>
+<p><strong>写时复制机制</strong>：</p>
+<ul>
+<li>当调用 fork() 时，操作系统并不会立即复制父进程的所有内存给子进程</li>
+<li>相反，父进程和子进程最初共享相同的物理内存页</li>
+<li>只有当任一进程尝试修改这些共享页时，操作系统才会为该进程创建该页的副本</li>
+</ul>
+<p><strong>虚拟内存地址</strong>：</p>
+<ul>
+<li>虽然父进程和子进程中打印的 g_val 地址（虚拟地址）相同，但这只是虚拟地址空间的相同</li>
+<li>在物理内存中，一旦发生写操作（如子进程中的 g_val–），这两个变量实际上位于不同的物理页</li>
+</ul>
+<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fork() 函数，创建子进程</span><br></pre></td></tr></table></figure>
+
+<p>进程 &#x3D; 内核的相关管理数据结构 + 代码和数据</p>
+<p><strong>创建子进程：</strong></p>
+<p>分配新的内存块和内核数据结构给子进程</p>
+<p>将父进程的部分数据结构内容拷贝给子进程</p>
+<p>为了方便父进程对子进程进行表示， fork() 函数 父进程是返回子进程id，子进程返回0</p>
+<h4 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h4><p>释放代码和数据所占用的空间</p>
+<p>释放内核数据结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $? # 父进程bash获取到的最近的一个进程的退出码</span><br></pre></td></tr></table></figure>
+
+<p>退出码非0表示失败， 数字不同表示失败的原因</p>
+<p>打印错误码对应信息</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> errcode = <span class="number">0</span>; errcode &lt;= <span class="number">255</span>; errcode++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d, %s\n&quot;</span>, errcode, strerror(errcode));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>父进程bash需要知道子进程退出码， 得知成功&#x2F;错误原因， 显示给用户</p>
+<p>main函数的return就是进程退出码</p>
+<p>进程终止的三种情况</p>
+<p>代码跑完，结果正确</p>
+<p>代码跑完，结果不正确  （通过进程退出码确定）</p>
+<p>代码执行时出现了异常，提前退出</p>
+<p>先确认是否异常，再看退出码</p>
+<p>衡量进程退出需要看两个数字，退出信号， 退出码</p>
+<p>exit 和 _exit 都表示在任意位置结束进程。他们的区别是_exit 不会刷新缓冲区，</p>
+<p><strong>exit 是C库函数的调用方法，_exit是系统调用。可以得出缓冲区不在操作系统中。</strong></p>
+<h4 id="进程等待"><a href="#进程等待" class="headerlink" title="进程等待"></a>进程等待</h4>
       
     </div>
     <footer class="article-footer">
@@ -320,7 +419,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">认识冯诺依曼系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">进程的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">理解进程</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">认识冯诺依曼系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">进程的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">理解进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="toc-number">2.3.</span> <span class="toc-text">进程状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E7%8A%B6%E6%80%81"><span class="toc-number">2.3.1.</span> <span class="toc-text">阻塞状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%82%E8%B5%B7%E7%8A%B6%E6%80%81%EF%BC%88Suspended-State%EF%BC%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">挂起状态（Suspended State）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">2.4.</span> <span class="toc-text">进程优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.5.</span> <span class="toc-text">环境变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="toc-number">2.5.1.</span> <span class="toc-text">命令行参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-1"><span class="toc-number">2.5.2.</span> <span class="toc-text">环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-number">2.6.</span> <span class="toc-text">程序的地址空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="toc-number">2.7.</span> <span class="toc-text">进程控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%88%E6%AD%A2"><span class="toc-number">2.7.1.</span> <span class="toc-text">进程终止</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AD%89%E5%BE%85"><span class="toc-number">2.7.2.</span> <span class="toc-text">进程等待</span></a></li></ol></li></ol></li></ol>
       
   </div>
 </div>
@@ -423,10 +522,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        16.2k
+        18.4k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:14
+        01:23
       </div>
     
     
@@ -458,7 +557,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">认识冯诺依曼系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">进程的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">理解进程</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86%E5%86%AF%E8%AF%BA%E4%BE%9D%E6%9B%BC%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">认识冯诺依曼系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.</span> <span class="toc-text">操作系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">进程的组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">理解进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="toc-number">2.3.</span> <span class="toc-text">进程状态</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E7%8A%B6%E6%80%81"><span class="toc-number">2.3.1.</span> <span class="toc-text">阻塞状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%82%E8%B5%B7%E7%8A%B6%E6%80%81%EF%BC%88Suspended-State%EF%BC%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">挂起状态（Suspended State）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">2.4.</span> <span class="toc-text">进程优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.5.</span> <span class="toc-text">环境变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="toc-number">2.5.1.</span> <span class="toc-text">命令行参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-1"><span class="toc-number">2.5.2.</span> <span class="toc-text">环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-number">2.6.</span> <span class="toc-text">程序的地址空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="toc-number">2.7.</span> <span class="toc-text">进程控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%88%E6%AD%A2"><span class="toc-number">2.7.1.</span> <span class="toc-text">进程终止</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AD%89%E5%BE%85"><span class="toc-number">2.7.2.</span> <span class="toc-text">进程等待</span></a></li></ol></li></ol></li></ol>
       
   </div>
 </div>
