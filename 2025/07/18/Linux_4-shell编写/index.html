@@ -1,0 +1,694 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_tq6stt6tcg';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.code_block = {"expand":true};</script>
+  
+  <title>
+    Linux_4 shell编写 |
+    
+    NILV的博客
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="shellpwd  (&#x2F;root&#x2F;A&#x2F;2025_7&#x2F;19&#x2F;myshell)  首先需要设计命令行提示 （MakeCommandLine()）首先获取相关信息 getenv(“name”) 123456789101112131415161718192021222324252627&#x2F;&#x2F; 获取用户名const char* GetUserName() &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux_4 shell编写">
+<meta property="og:url" content="http://example.com/2025/07/18/Linux_4-shell%E7%BC%96%E5%86%99/index.html">
+<meta property="og:site_name" content="NILV的博客">
+<meta property="og:description" content="shellpwd  (&#x2F;root&#x2F;A&#x2F;2025_7&#x2F;19&#x2F;myshell)  首先需要设计命令行提示 （MakeCommandLine()）首先获取相关信息 getenv(“name”) 123456789101112131415161718192021222324252627&#x2F;&#x2F; 获取用户名const char* GetUserName() &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-18T09:21:52.896Z">
+<meta property="article:modified_time" content="2025-07-19T10:17:28.699Z">
+<meta property="article:author" content="nilv">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="NILV的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/">首页</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/archives">归档</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/about">关于</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/friend">友链</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="Linux_4 shell编写">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">Linux_4 shell编写</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-Linux_4-shell编写" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/07/18/Linux_4-shell%E7%BC%96%E5%86%99/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-07-18T09:21:52.896Z" itemprop="datePublished">2025-07-18</time>
+    <time style="display: none;" id="post-update-time">2025-07-19</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><p><del>pwd  (&#x2F;root&#x2F;A&#x2F;2025_7&#x2F;19&#x2F;myshell)</del> </p>
+<h4 id="首先需要设计命令行提示-（MakeCommandLine-）"><a href="#首先需要设计命令行提示-（MakeCommandLine-）" class="headerlink" title="首先需要设计命令行提示 （MakeCommandLine()）"></a>首先需要设计命令行提示 （MakeCommandLine()）</h4><p>首先获取相关信息</p>
+<p>getenv(“name”)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取用户名</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">GetUserName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* name = getenv(<span class="string">&quot;USER&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (name == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;None&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取主机名</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">GetHostName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">char</span> hostname[<span class="number">256</span>];</span><br><span class="line">    <span class="keyword">if</span> (gethostname(hostname, <span class="keyword">sizeof</span>(hostname)) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> hostname;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;None&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取当前路径</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">GetCwd</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* cwd = getenv(<span class="string">&quot;PWD&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (cwd == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;None&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cwd;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>制作命令行提示</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 制作命令提示行</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MakeCommandLine</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 内容</span></span><br><span class="line">    <span class="type">char</span> commandline[SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* username = GetUserName();</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* hostname = GetHostName();</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* cwd = GetCwd();</span><br><span class="line">    <span class="comment">// printf(&quot;%s\n&quot;, username);</span></span><br><span class="line">    <span class="comment">// printf(&quot;%s\n&quot;, cwd);</span></span><br><span class="line">    <span class="comment">// printf(&quot;%s\n&quot;, hostname);</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 拼接</span></span><br><span class="line">    <span class="built_in">snprintf</span>(commandline, <span class="keyword">sizeof</span>(commandline), <span class="string">&quot;[%s@%s %s]&gt; &quot;</span>, username, hostname, cwd);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, commandline);</span><br><span class="line">    fflush(<span class="built_in">stdout</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="获取用户命令行字符串（GetUserCommand-char-usercommand-size-t-n-）"><a href="#获取用户命令行字符串（GetUserCommand-char-usercommand-size-t-n-）" class="headerlink" title="获取用户命令行字符串（GetUserCommand(char usercommand[], size_t n)）"></a>获取用户命令行字符串（GetUserCommand(char usercommand[], size_t n)）</h4><p>使用fgets() 函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取用户输入字符串</span></span><br><span class="line"><span class="comment">// 返回值 &gt; 0进行后续处理</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">GetUserCommand</span><span class="params">(<span class="type">char</span> usercommand[], <span class="type">size_t</span> n)</span> &#123;</span><br><span class="line">    <span class="type">char</span> *s = fgets(usercommand, n, <span class="built_in">stdin</span>);</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 去掉末尾 换行符</span></span><br><span class="line">    usercommand[<span class="built_in">strlen</span>(usercommand) - <span class="number">1</span>] = ZERO;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">strlen</span>(usercommand);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="分割用户输入字符串-（SplitCommand-char-command-size-t-n-）"><a href="#分割用户输入字符串-（SplitCommand-char-command-size-t-n-）" class="headerlink" title="分割用户输入字符串 （SplitCommand(char command[], size_t n)）"></a>分割用户输入字符串 （SplitCommand(char command[], size_t n)）</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 存放命令</span></span><br><span class="line"><span class="type">char</span> *gArgv[NUM];</span><br><span class="line"><span class="comment">// 分割输入命令</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">SplitCommand</span><span class="params">(<span class="type">char</span> command[], <span class="type">size_t</span> n)</span>&#123;</span><br><span class="line">  <span class="comment">//ls - a -l -n</span></span><br><span class="line">  <span class="comment">// SEP &quot; &quot; 表示使用 strtok函数 按照SEP分割字符串</span></span><br><span class="line">  gArgv[<span class="number">0</span>] = strtok(command, SEP);</span><br><span class="line">  <span class="type">int</span> index = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (gArgv[index++] = strtok(<span class="literal">NULL</span>, SEP));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="执行命令-（ExecuteCommand-）"><a href="#执行命令-（ExecuteCommand-）" class="headerlink" title="执行命令 （ExecuteCommand()）"></a>执行命令 （ExecuteCommand()）</h4><p>执行命令时， 不能自己去执行， 需要子进程去执行</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 执行命令</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ExecuteCommand</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> id = fork()；</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (id &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (id == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 子进程执行进程替换</span></span><br><span class="line">        execvp(gArgv[<span class="number">0</span>], gArgv);</span><br><span class="line">        <span class="built_in">exit</span>(errno);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="type">int</span> status = <span class="number">0</span>;</span><br><span class="line">        <span class="type">pid_t</span> rid = waitpid(id, &amp;status, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="第一版-shell-代码"><a href="#第一版-shell-代码" class="headerlink" title="第一版 shell 代码"></a>第一版 shell 代码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ZERO <span class="string">&#x27;\0&#x27;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 提示行 / （）大小</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIZE 512</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 分割命令个数</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NUM 32</span></span><br><span class="line"><span class="comment">// 按照SEP分割字符串</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SEP <span class="string">&quot; &quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取用户名</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">GetUserName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* name = getenv(<span class="string">&quot;USER&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (name == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;None&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取主机名</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">GetHostName</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">char</span> hostname[<span class="number">256</span>];</span><br><span class="line">    <span class="keyword">if</span> (gethostname(hostname, <span class="keyword">sizeof</span>(hostname)) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> hostname;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;None&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取当前路径</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">GetCwd</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* cwd = getenv(<span class="string">&quot;PWD&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (cwd == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;None&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cwd;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 制作命令提示行</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">MakeCommandLine</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 内容</span></span><br><span class="line">    <span class="type">char</span> commandline[SIZE];</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* username = GetUserName();</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* hostname = GetHostName();</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* cwd = GetCwd();</span><br><span class="line">    <span class="comment">// printf(&quot;%s\n&quot;, username);</span></span><br><span class="line">    <span class="comment">// printf(&quot;%s\n&quot;, cwd);</span></span><br><span class="line">    <span class="comment">// printf(&quot;%s\n&quot;, hostname);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拼接</span></span><br><span class="line">    <span class="built_in">snprintf</span>(commandline, <span class="keyword">sizeof</span>(commandline), <span class="string">&quot;[%s@%s %s]&gt; &quot;</span>, username, hostname, cwd);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>, commandline);</span><br><span class="line">    fflush(<span class="built_in">stdout</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取用户输入字符串</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">GetUserCommand</span><span class="params">(<span class="type">char</span> usercommand[], <span class="type">size_t</span> n)</span> &#123;</span><br><span class="line">    <span class="type">char</span> *s = fgets(usercommand, n, <span class="built_in">stdin</span>);</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 去掉末尾 换行符</span></span><br><span class="line">    usercommand[<span class="built_in">strlen</span>(usercommand) - <span class="number">1</span>] = ZERO;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">strlen</span>(usercommand);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 存放命令</span></span><br><span class="line"><span class="type">char</span> *gArgv[NUM];</span><br><span class="line"><span class="comment">// 分割输入命令</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">SplitCommand</span><span class="params">(<span class="type">char</span> command[], <span class="type">size_t</span> n)</span>&#123;</span><br><span class="line">  <span class="comment">//ls - a -l -n</span></span><br><span class="line">  <span class="comment">// SEP &quot; &quot; 表示使用 strtok函数 按照SEP分割字符串</span></span><br><span class="line">  gArgv[<span class="number">0</span>] = strtok(command, SEP);</span><br><span class="line">  <span class="type">int</span> index = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (gArgv[index++] = strtok(<span class="literal">NULL</span>, SEP));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行命令</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">ExecuteCommand</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">pid_t</span> id = fork();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (id &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 创建进程失败</span></span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (id == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 子进程执行进程替换</span></span><br><span class="line">        execvp(gArgv[<span class="number">0</span>], gArgv);</span><br><span class="line">        <span class="built_in">exit</span>(errno);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 进程等待</span></span><br><span class="line">        <span class="type">int</span> status = <span class="number">0</span>;</span><br><span class="line">        <span class="type">pid_t</span> rid = waitpid(id, &amp;status, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 制作一个命令行</span></span><br><span class="line">        MakeCommandLine();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取用户输入字符串</span></span><br><span class="line">        <span class="type">char</span> usercommand[SIZE];</span><br><span class="line">        <span class="type">int</span> n = GetUserCommand(usercommand, <span class="keyword">sizeof</span>(usercommand));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 命令行字符串的分割</span></span><br><span class="line">        SplitCommand(usercommand, <span class="keyword">sizeof</span>(usercommand));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 执行命令</span></span><br><span class="line">        ExecuteCommand();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>上述代码无法切换路径， 是子进程在切换路径</p>
+<h4 id="检查命令是否是内建命令-CheckBuildir"><a href="#检查命令是否是内建命令-CheckBuildir" class="headerlink" title="检查命令是否是内建命令  (CheckBuildir())"></a>检查命令是否是内建命令  (CheckBuildir())</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> cwd[SIZE];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行cd命令</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Cd</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* path = gArgv[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span> (path == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        path = GetHome();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 改变路径</span></span><br><span class="line">    chdir(path);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更新环境变量</span></span><br><span class="line">    <span class="type">char</span> temp[SIZE];</span><br><span class="line">    getcwd(temp, <span class="keyword">sizeof</span>(temp));</span><br><span class="line">    <span class="built_in">snprintf</span>(cwd, <span class="keyword">sizeof</span>(cwd), <span class="string">&quot;PWD=%s&quot;</span>, temp);</span><br><span class="line">    putenv(cwd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是否内建命令</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">CheckBuildir</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> yes = <span class="number">0</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* enter_cwd = gArgv[<span class="number">0</span>];</span><br><span class="line">    <span class="comment">// 一个个比较</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">strcmp</span>(enter_cwd, <span class="string">&quot;cd&quot;</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">        yes = <span class="number">1</span>;</span><br><span class="line">        Cd();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> yes;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/images/banner.webp" data-sizes="auto" alt="Linux_5 文件相关" class="lazyload">
+          
+        
+        <a href="/2025/07/19/Linux_5-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            Linux_5 文件相关
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="/images/banner.webp" data-sizes="auto" alt="Linux_3 操作系统" class="lazyload">
+        
+      
+      <a href="/2025/07/05/Linux_3%20gdb%E8%B0%83%E8%AF%95%E5%99%A8-&-%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          Linux_3 操作系统
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell"><span class="toc-number">1.</span> <span class="toc-text">shell</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E9%9C%80%E8%A6%81%E8%AE%BE%E8%AE%A1%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8F%90%E7%A4%BA-%EF%BC%88MakeCommandLine-%EF%BC%89"><span class="toc-number">1.0.1.</span> <span class="toc-text">首先需要设计命令行提示 （MakeCommandLine()）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88GetUserCommand-char-usercommand-size-t-n-%EF%BC%89"><span class="toc-number">1.0.2.</span> <span class="toc-text">获取用户命令行字符串（GetUserCommand(char usercommand[], size_t n)）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%89%B2%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E4%B8%B2-%EF%BC%88SplitCommand-char-command-size-t-n-%EF%BC%89"><span class="toc-number">1.0.3.</span> <span class="toc-text">分割用户输入字符串 （SplitCommand(char command[], size_t n)）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4-%EF%BC%88ExecuteCommand-%EF%BC%89"><span class="toc-number">1.0.4.</span> <span class="toc-text">执行命令 （ExecuteCommand()）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%89%88-shell-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">第一版 shell 代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E5%91%BD%E4%BB%A4%E6%98%AF%E5%90%A6%E6%98%AF%E5%86%85%E5%BB%BA%E5%91%BD%E4%BB%A4-CheckBuildir"><span class="toc-number">1.1.1.</span> <span class="toc-text">检查命令是否是内建命令  (CheckBuildir())</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="nilv" class="lazyload">
+  <div class="sidebar-author-name">nilv</div>
+  <div class="sidebar-description">希望你能得到些什么</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">18</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2025
+      <span class="footer-info-sep rotate"></span>
+      nilv
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        20.3k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:33
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shell"><span class="toc-number">1.</span> <span class="toc-text">shell</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E9%9C%80%E8%A6%81%E8%AE%BE%E8%AE%A1%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8F%90%E7%A4%BA-%EF%BC%88MakeCommandLine-%EF%BC%89"><span class="toc-number">1.0.1.</span> <span class="toc-text">首先需要设计命令行提示 （MakeCommandLine()）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88GetUserCommand-char-usercommand-size-t-n-%EF%BC%89"><span class="toc-number">1.0.2.</span> <span class="toc-text">获取用户命令行字符串（GetUserCommand(char usercommand[], size_t n)）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%89%B2%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E5%AD%97%E7%AC%A6%E4%B8%B2-%EF%BC%88SplitCommand-char-command-size-t-n-%EF%BC%89"><span class="toc-number">1.0.3.</span> <span class="toc-text">分割用户输入字符串 （SplitCommand(char command[], size_t n)）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4-%EF%BC%88ExecuteCommand-%EF%BC%89"><span class="toc-number">1.0.4.</span> <span class="toc-text">执行命令 （ExecuteCommand()）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%89%88-shell-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">第一版 shell 代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E5%91%BD%E4%BB%A4%E6%98%AF%E5%90%A6%E6%98%AF%E5%86%85%E5%BB%BA%E5%91%BD%E4%BB%A4-CheckBuildir"><span class="toc-number">1.1.1.</span> <span class="toc-text">检查命令是否是内建命令  (CheckBuildir())</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="nilv" class="lazyload">
+  <div class="sidebar-author-name">nilv</div>
+  <div class="sidebar-description">希望你能得到些什么</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">18</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.2.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+
+  </body>
+  <script src="/js/<file>"></script>
+    <link rel="stylesheet" href="/css/<file>" />
+
+    <canvas id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"></canvas>
+    <script src="https://s4.zstatic.net/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+
+    <canvas id="background"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"></canvas>
+    <script src="/js/background.min.js"></script>
+  </html>
+
