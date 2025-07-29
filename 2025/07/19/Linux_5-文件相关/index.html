@@ -27,15 +27,15 @@
 
   
   
-    <meta name="description" content="基础 I&#x2F;O">
+    <meta name="description" content="基础 I&#x2F;O打开文件本质是进程打开文件 操作系统内部存在大量被打开的文件， 这些文件需要被操作系统管理起来， OS内部需要一个描述文件属性的结构体 操作文件本质：进程操作文件 文件刚开始时在磁盘上，需要os操作文件 linux系统 open函数 12345678#include &lt;sys&#x2F;types.h&gt;#include &lt;sys&#x2F;stat.h&gt;#include">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux_5 文件相关">
 <meta property="og:url" content="http://example.com/2025/07/19/Linux_5-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3/index.html">
 <meta property="og:site_name" content="NILV的博客">
-<meta property="og:description" content="基础 I&#x2F;O">
+<meta property="og:description" content="基础 I&#x2F;O打开文件本质是进程打开文件 操作系统内部存在大量被打开的文件， 这些文件需要被操作系统管理起来， OS内部需要一个描述文件属性的结构体 操作文件本质：进程操作文件 文件刚开始时在磁盘上，需要os操作文件 linux系统 open函数 12345678#include &lt;sys&#x2F;types.h&gt;#include &lt;sys&#x2F;stat.h&gt;#include">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-19T10:18:28.813Z">
-<meta property="article:modified_time" content="2025-07-19T10:18:28.914Z">
+<meta property="article:modified_time" content="2025-07-29T03:52:12.418Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2025/07/19/Linux_5-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-07-19T10:18:28.813Z" itemprop="datePublished">2025-07-19</time>
-    <time style="display: none;" id="post-update-time">2025-07-19</time>
+    <time style="display: none;" id="post-update-time">2025-07-29</time>
   </a>
 </div>
 
@@ -205,7 +205,81 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
       
-        <h2 id="基础-I-O"><a href="#基础-I-O" class="headerlink" title="基础 I&#x2F;O"></a>基础 I&#x2F;O</h2>
+        <h2 id="基础-I-O"><a href="#基础-I-O" class="headerlink" title="基础 I&#x2F;O"></a>基础 I&#x2F;O</h2><p>打开文件本质是进程打开文件</p>
+<p>操作系统内部存在大量被打开的文件， 这些文件需要被操作系统管理起来， OS内部需要一个描述文件属性的结构体</p>
+<p>操作文件本质：进程操作文件</p>
+<p>文件刚开始时在磁盘上，需要os操作文件</p>
+<p>linux系统 open函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;sys/stat.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line"></span><br><span class="line">int open(const char *pathname, int flags);</span><br><span class="line">int open(const char *pathname, int flags, mode_t mode);</span><br><span class="line"># flags 标记位传参， 用比特位进行标志位的传递 OS很多系统调用接口的常见设计方法</span><br><span class="line"># 本质是一个位图（使用二进制位（0和1）来表示数据或资源状态的数据结构）</span><br></pre></td></tr></table></figure>
+
+<p>示例代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span> </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* filename = <span class="string">&quot;log.txt&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, <span class="number">0666</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;open&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* message = <span class="string">&quot;hello linux\n&quot;</span>;</span><br><span class="line">    write(fd, message, <span class="built_in">strlen</span>(message));</span><br><span class="line">    close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="文件描述符-fd"><a href="#文件描述符-fd" class="headerlink" title="文件描述符 fd"></a>文件描述符 fd</h3><p>内核的进程和文件映射关系的数组的下标</p>
+<p>open： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">创建 file</span><br><span class="line">开辟文件缓冲区的空间</span><br><span class="line">查进程的文件描述符表</span><br><span class="line">file地址， 填入对应的表下标中</span><br><span class="line">返回下标</span><br></pre></td></tr></table></figure>
+
+<p>linux系统一切皆文件</p>
+<h3 id="重定向-缓冲区"><a href="#重定向-缓冲区" class="headerlink" title="重定向 &amp; 缓冲区"></a>重定向 &amp; 缓冲区</h3><p>观察代码结果</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span> </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* filename = <span class="string">&quot;log.txt&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    close(<span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, <span class="number">0666</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;open&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;printf, fd: %d\n&quot;</span>, fd);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, <span class="string">&quot;fprintf, fd: %d\n&quot;</span>, fd);</span><br><span class="line">    fflush(<span class="built_in">stdout</span>);</span><br><span class="line">    close(fd);</span><br><span class="line">    <span class="comment">// 上面这两行， 注释第一行就log.txt文件不会输出， 两行都注释会输出， 这涉及文件缓冲区这一块</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>stdout 中文件描述符的下标就是1</p>
+<p>注释部分的原因是， 存在语言级别的缓冲区。printf写到了这个缓冲区中， 程序结束时， 会通过 1 号文件描述符像1号文件刷新内容， 所以close(fd) 之后1号描述符被关闭了。</p>
+<p>重定向 dup</p>
+<p>dup2(fd, 1)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, <span class="number">0666</span>);</span><br><span class="line"><span class="comment">// int fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0666); //追加重定向</span></span><br><span class="line"></span><br><span class="line">dup2(fd, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, <span class="string">&quot;hello world\n&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>进程替换不会影响进文件描述符表</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><p>存在非常多的文件， 没被打开的文件存在磁盘（通过磁贴特性，写入01数据）。</p>
+<p>通过文件路径 + 文件名 找到磁盘中的文件  </p>
+<h3 id="磁盘的存储结构"><a href="#磁盘的存储结构" class="headerlink" title="磁盘的存储结构"></a>磁盘的存储结构</h3><p>磁盘是一个机械设备，外设（速度相对内存非常慢</p>
+<p>磁盘的表面被划分为一个个磁道， 磁道中也分为一个个扇区， 一个扇区为 512B</p>
+<p>1片 &#x3D; n 磁道， 1 磁道 &#x3D; m 扇区</p>
+<p>如何找到指定位置的扇区：磁针 -&gt; 磁道 -&gt; 扇区（CHS）</p>
+<p>为了方便对磁盘的管理， 把磁盘划分为一个个扇区组成的数组 sector disk_array[N]， 通过数组的下标（经过一系列计算）定位 CHS， 访问磁盘。</p>
+<p>一般而言， OS 未来和磁盘交互的时候 基本单位是 八个连续扇区（块大小）， 4KB</p>
+<p>文件 &#x3D; 多个块组成</p>
+<h4 id="磁盘文件系统"><a href="#磁盘文件系统" class="headerlink" title="磁盘文件系统"></a>磁盘文件系统</h4><p>Data block 数据区， 存放文件内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">数据区是磁盘上用于实际存储文件数据的部分。它由多个大小相等的数据块组成，每个数据块可以存储文件的一部分内容。文件系统将这些数据块分配给文件使用，并通过特定的方式记录哪些数据块已被使用，哪些仍然空闲。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>块位图 ： 通过比特位内容，表示Data block区整体使用情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">块位图是一种用来跟踪数据区中哪些块已经被使用，哪些块仍然是空闲的方法。它通常是一个位数组，其中每一位对应于数据区中的一个块。如果某一位被设置为1，则表示对应的块已经被分配出去；若为0，则表示该块未被使用。这种方法使得文件系统能够高效地找到可用的块来存储新数据或扩展已有文件。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>inode table：存放文件的属性（大小，所有者… <strong>是一个大小固定的集合体</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Inode是指在Unix和类Unix文件系统（如ext2, ext3, ext4）中，用于存储文件元数据的数据结构。每一个文件都有一个与之关联的inode，它包含文件的属性信息，但不包括文件名和文件数据。inode中存储的信息包括：</span><br><span class="line">文件的权限（读、写、执行）</span><br><span class="line">文件的所有者和组</span><br><span class="line">文件的大小</span><br><span class="line">文件的创建时间、修改时间和访问时间</span><br><span class="line">文件的数据块指针（直接指向数据块或者间接指向其他索引块）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>inode位图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Inode位图是文件系统中用于记录哪些inode已经被使用，哪些是空闲的的一种数据结构。</span><br><span class="line"></span><br><span class="line">它是一个位数组（bit array），每一位对应一个 inode。</span><br><span class="line">如果某一位是 1，表示对应的 inode 已被使用；</span><br><span class="line">如果是 0，表示该 inode 未被使用，可以分配给新文件或目录。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​	目录 &#x3D; 文件属性 + 文件内容， 目录文件中存放inode和文件名的映射关系。</p>
+<p><strong>删除文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">更新inode表，将inode标记为未使用。</span><br><span class="line">更新块位图，将文件占用的数据块标记为空闲。</span><br><span class="line">实际存储的数据不会立即从磁盘上物理删除，而是等到这些空间被再次写入新数据时才真正被覆盖。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="软硬链接"><a href="#软硬链接" class="headerlink" title="软硬链接"></a>软硬链接</h3><p>理解一个程序如何加载进入内存中的</p>
+<p>软连接 具有自己的新inode</p>
+<p>硬链接 链接出来不是一个独立的文件，与目标文件共用inode， 属性中有一系列硬链接</p>
+<p>为了避免形成路径环绕， 不允许对目录建立硬链接</p>
+<h3 id="动静态库"><a href="#动静态库" class="headerlink" title="动静态库"></a>动静态库</h3><p>看下面代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">	char buffer[1024];</span><br><span class="line">	strcpy(buffer, &quot;hello world\n&quot;);</span><br><span class="line">	printf(&quot;%s\n&quot;, buffer);</span><br><span class="line">	return 9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译这个文件形成  可执行文件 a.out</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ldd a.out </span><br><span class="line">显示</span><br><span class="line">linux-vdso.so.1 (0x00007ffe92df5000)</span><br><span class="line">libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f91493d8000)</span><br><span class="line">/lib64/ld-linux-x86-64.so.2 (0x00007f91495fa000)</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
@@ -222,6 +296,22 @@
   </div>
   
   <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/images/banner.webp" data-sizes="auto" alt="Codeforces Round 702 &amp; atcoder 322" class="lazyload">
+          
+        
+        <a href="/2025/07/26/Codeforces-Round-702-&-atcoder-322/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            Codeforces Round 702 &amp; atcoder 322
+          
+        </h3>
+      </div>
     
     
     <div class="article-nav-link-wrap article-nav-link-right">
@@ -262,7 +352,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80-I-O"><span class="toc-number">1.</span> <span class="toc-text">基础 I&#x2F;O</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80-I-O"><span class="toc-number">1.</span> <span class="toc-text">基础 I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-fd"><span class="toc-number">1.1.</span> <span class="toc-text">文件描述符 fd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91-%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-number">1.2.</span> <span class="toc-text">重定向 &amp; 缓冲区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">磁盘的存储结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.1.</span> <span class="toc-text">磁盘文件系统</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E7%A1%AC%E9%93%BE%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">软硬链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E9%9D%99%E6%80%81%E5%BA%93"><span class="toc-number">2.3.</span> <span class="toc-text">动静态库</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -275,7 +365,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">18</div>
+    <div class="sidebar-state-number">20</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -365,10 +455,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        20.3k
+        22k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:33
+        01:40
       </div>
     
     
@@ -400,7 +490,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80-I-O"><span class="toc-number">1.</span> <span class="toc-text">基础 I&#x2F;O</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80-I-O"><span class="toc-number">1.</span> <span class="toc-text">基础 I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-fd"><span class="toc-number">1.1.</span> <span class="toc-text">文件描述符 fd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91-%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-number">1.2.</span> <span class="toc-text">重定向 &amp; 缓冲区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">磁盘的存储结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.1.</span> <span class="toc-text">磁盘文件系统</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E7%A1%AC%E9%93%BE%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">软硬链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E9%9D%99%E6%80%81%E5%BA%93"><span class="toc-number">2.3.</span> <span class="toc-text">动静态库</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -413,7 +503,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">18</div>
+    <div class="sidebar-state-number">20</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
