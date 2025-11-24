@@ -35,7 +35,7 @@
 <meta property="og:description" content="线程线程的概念：在进程内部运行， 是CPU调度的基本单位 进程（Process）：程序的一次运行实例，拥有自己独立的内存空间（代码段、数据段、堆、栈等）。 线程（Thread）：是进程中的一个执行流，多个线程共享同一个进程的内存空间，但每个线程有自己的栈、寄存器、程序计数器。 在 Linux 内核中，并没有“专门的线程”这一概念，线程其实就是一种特殊的进程。 Linux 使用 轻量级进程（LWP，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-09-27T10:29:03.475Z">
-<meta property="article:modified_time" content="2025-09-27T10:29:03.657Z">
+<meta property="article:modified_time" content="2025-10-08T13:05:00.423Z">
 <meta property="article:author" content="nilv">
 <meta name="twitter:card" content="summary">
   
@@ -192,7 +192,7 @@
       <div class="article-date">
   <a href="/2025/09/27/Linux_7-%E7%BA%BF%E7%A8%8B/" class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-09-27T10:29:03.475Z" itemprop="datePublished">2025-09-27</time>
-    <time style="display: none;" id="post-update-time">2025-09-27</time>
+    <time style="display: none;" id="post-update-time">2025-10-08</time>
   </a>
 </div>
 
@@ -222,6 +222,42 @@
 
 
 
+<h2 id="线程封装"><a href="#线程封装" class="headerlink" title="线程封装"></a>线程封装</h2><p>极简封装</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> ThreadMoudle &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// using func_t = std::functional&lt;void()&gt;;</span></span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*<span class="type">func_t</span>)</span><span class="params">(<span class="type">const</span> std::string &amp;name)</span></span>; <span class="comment">// 函数指针</span></span><br><span class="line">   <span class="keyword">class</span> <span class="title class_">Mythread</span> &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">Excute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            _isrunning = <span class="literal">true</span>;</span><br><span class="line">            _func(_name);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">Mythread</span>(<span class="type">const</span> std::string&amp; name, <span class="type">func_t</span> func):_name(name), _func(func) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">static</span> <span class="type">void</span> *<span class="title">ThreadRoutine</span><span class="params">(<span class="type">void</span>* args)</span> </span>&#123;</span><br><span class="line">            Mythread *self = <span class="built_in">static_cast</span>&lt;Mythread*&gt;(args);</span><br><span class="line">            self-&gt;<span class="built_in">Excute</span>();</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">bool</span> <span class="title">Start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="type">int</span> n = ::<span class="built_in">pthread_create</span>(&amp;_tid, <span class="literal">nullptr</span>, ThreadRoutine, <span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">if</span> (n != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">Stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (_isrunning) &#123;</span><br><span class="line">                _isrunning = <span class="literal">false</span>;</span><br><span class="line">                <span class="built_in">pthread_cancel</span>(_tid);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function">std::string <span class="title">Status</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (_isrunning) <span class="keyword">return</span> <span class="string">&quot;running&quot;</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> <span class="string">&quot;sleep&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">Join</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!_isrunning) &#123;</span><br><span class="line">                <span class="built_in">pthread_join</span>(_tid, <span class="literal">nullptr</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ~<span class="built_in">Mythread</span>() &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        std::string _name;</span><br><span class="line">        <span class="type">pthread_t</span> _tid;</span><br><span class="line">        <span class="type">bool</span> _isrunning;</span><br><span class="line">        <span class="type">func_t</span> _func; <span class="comment">// 线程要执行的回调函数</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="线程互斥"><a href="#线程互斥" class="headerlink" title="线程互斥"></a>线程互斥</h3><p><strong>为什么需要互斥？</strong></p>
+<p>在多线程编程中，多个线程可能会同时访问和修改共享资源（比如全局变量、链表、文件、socket 等）。<br> 如果没有控制访问顺序，就会出现 <strong>竞态条件（race condition）</strong>，导致数据错误或程序行为不可预测</p>
+<p>观察下面模拟抢票过程</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mythread.hpp&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> ThreadMoudle;</span><br><span class="line"><span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> tickets = <span class="number">10000</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">route</span><span class="params">(<span class="type">const</span> std::string&amp; name)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (tickets &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tickets &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">usleep</span>(<span class="number">1000</span>);</span><br><span class="line">            cnt++;</span><br><span class="line">            tickets--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">Mythread <span class="title">t1</span><span class="params">(<span class="string">&quot;thread-1&quot;</span>, route)</span></span>;</span><br><span class="line">    <span class="function">Mythread <span class="title">t2</span><span class="params">(<span class="string">&quot;thread-2&quot;</span>, route)</span></span>;</span><br><span class="line">    <span class="function">Mythread <span class="title">t3</span><span class="params">(<span class="string">&quot;thread-3&quot;</span>, route)</span></span>;</span><br><span class="line">    <span class="function">Mythread <span class="title">t4</span><span class="params">(<span class="string">&quot;thread-4&quot;</span>, route)</span></span>;</span><br><span class="line">    t<span class="number">1.</span><span class="built_in">Start</span>();</span><br><span class="line">    t<span class="number">2.</span><span class="built_in">Start</span>();</span><br><span class="line">    t<span class="number">3.</span><span class="built_in">Start</span>();</span><br><span class="line">    t<span class="number">4.</span><span class="built_in">Start</span>();</span><br><span class="line"></span><br><span class="line">    t<span class="number">1.</span><span class="built_in">Join</span>();</span><br><span class="line">    t<span class="number">2.</span><span class="built_in">Join</span>();</span><br><span class="line">    t<span class="number">3.</span><span class="built_in">Join</span>();</span><br><span class="line">    t<span class="number">4.</span><span class="built_in">Join</span>();</span><br><span class="line">    std::cout &lt;&lt; cnt &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注意到cnt和tickets不相等！</p>
+<p><strong>竞态条件（Race Condition）</strong>：这是问题的核心。虽然 <code>tickets</code> 是共享资源，但在多线程环境下，每个线程的操作并不是原子性的。具体来说，<code>tickets--</code> 包含了以下几步：</p>
+<ul>
+<li>读取 <code>tickets</code> 当前值</li>
+<li>减少 <code>tickets</code></li>
+<li>写回新的 <code>tickets</code> 值</li>
+</ul>
+<p>但是，在并发执行时，多个线程可能同时读取到相同的 <code>tickets</code> 值。比如：</p>
+<ul>
+<li>线程1读取到 <code>tickets = 100</code>，准备执行 <code>tickets--</code></li>
+<li>线程2也读取到 <code>tickets = 100</code>，也准备执行 <code>tickets--</code></li>
+</ul>
+<p>然后，线程1和线程2分别更新 <code>tickets</code>，最终导致 <code>tickets</code> 被减去 2，而不是 1，甚至可能在 <code>tickets == 0</code> 时还继续减少，导致 <code>tickets</code> 变成负数。</p>
+<p><strong>缺少同步机制</strong>：为了避免上述竞态条件，需要引入同步机制，如 <strong>互斥锁（mutex）</strong> 或 <strong>原子操作</strong>，确保在某一时刻只有一个线程能够修改 <code>tickets</code> 的值。</p>
+<p><strong>如何解决呢？</strong></p>
+<p>互斥锁（Mutex，Mutual Exclusion Lock）是一种用于同步多线程程序访问共享资源的机制。在并发编程中，多个线程同时访问共享资源可能会引起数据竞态和不一致的问题。为了解决这个问题，互斥锁确保在某一时刻只有一个线程可以访问某个资源，从而避免冲突。</p>
+<p><strong>互斥锁的工作原理</strong></p>
+<ol>
+<li><strong>锁定资源</strong>：线程在访问共享资源之前，需要先对资源加锁。加锁会阻塞其他线程，直到该线程释放锁。</li>
+<li><strong>释放锁</strong>：当线程完成对共享资源的操作后，需要释放锁，允许其他线程获得资源的访问权限。</li>
+<li><strong>死锁问题</strong>：如果两个或多个线程相互等待对方释放锁，就会发生死锁，程序无法继续执行。因此，设计良好的锁机制应该避免死锁。</li>
+</ol>
+<p>加锁处理</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> gmutex = PTHREAD_MUTEX_INITIALIZER;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">route</span><span class="params">(<span class="type">const</span> std::string&amp; name)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (tickets &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">pthread_mutex_lock</span>(&amp;gmutex);</span><br><span class="line">        <span class="keyword">if</span> (tickets &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">usleep</span>(<span class="number">1000</span>);</span><br><span class="line">            cnt++;</span><br><span class="line">            tickets--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">pthread_mutex_unlock</span>(&amp;gmutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就不会出现cnt &gt; tickets的情况</p>
 
       
     </div>
@@ -239,6 +275,22 @@
   </div>
   
   <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="/images/banner.webp" data-sizes="auto" alt="muduo网路库的学习" class="lazyload">
+          
+        
+        <a href="/2025/11/11/muduo%E7%BD%91%E8%B7%AF%E5%BA%93%E7%9A%84%E5%AD%A6%E4%B9%A0/"></a>
+        <div class="article-nav-caption">前一篇</div>
+        <h3 class="article-nav-title">
+          
+            muduo网路库的学习
+          
+        </h3>
+      </div>
     
     
     <div class="article-nav-link-wrap article-nav-link-right">
@@ -279,7 +331,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">线程</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%B0%81%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">线程封装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%BA%92%E6%96%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">线程互斥</span></a></li></ol></li></ol></li></ol>
       
   </div>
 </div>
@@ -292,7 +344,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">26</div>
+    <div class="sidebar-state-number">28</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -382,10 +434,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        33k
+        48.3k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:34
+        03:40
       </div>
     
     
@@ -417,7 +469,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">线程</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%B0%81%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">线程封装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%BA%92%E6%96%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">线程互斥</span></a></li></ol></li></ol></li></ol>
       
   </div>
 </div>
@@ -430,7 +482,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">26</div>
+    <div class="sidebar-state-number">28</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
